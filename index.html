@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PZ6SPHC4');</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>おとうふのじっけんしつ | 親子で楽しむ豆腐作り体験</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    
+    <style>
+        :root{
+            --brand-navy:#0A2A4E;
+            --brand-orange:#F5654B;
+            --chalkboard-bg:#3A413B;
+            --indicator-bottom-position: 15vh;
+            --section-overlap-vh: 50vh;
+        }
+        /* 基本スタイル */
+        html { scroll-behavior: smooth; }
+        body, h1,h2,h3,h4,p,div,span,a { font-family: 'M PLUS Rounded 1c', sans-serif; }
+        .brand-text-navy { color: var(--brand-navy); }
+        .brand-text-orange { color: var(--brand-orange); }
+        .bg-brand-navy { background-color: var(--brand-navy); }
+        .bg-brand-orange { background-color: var(--brand-orange); }
+        .text-shadow-strong { text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+
+        /* ローディング画面のスタイル */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FDF9F2;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        #loading-screen.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* ぷるぷる豆腐アニメーション */
+        .tofu-loader {
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: tofu-bounce 1.2s infinite ease-in-out;
+            margin-bottom: 20px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .loading-text {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-weight: bold;
+            color: #0A2A4E;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            animation: text-blink 1.5s infinite;
+        }
+
+        @keyframes tofu-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.9) translateY(5px); }
+        }
+        @keyframes text-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ヘッダー */
+        .header-top { background-color: transparent; }
+        .header-top .site-title, .header-top nav a, .header-top .hamburger-button, .header-top .mobile-reserve { color: white; }
+        .header-scrolled { background-color: rgba(255,255,255,0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.05); backdrop-filter: blur(5px); }
+        .header-scrolled .site-title, .header-scrolled nav a { color: var(--brand-navy); }
+        .header-scrolled .hamburger-button, .header-scrolled .mobile-reserve { color: var(--brand-navy); }
+        .header-scrolled nav a.bg-brand-orange { color: white; }
+
+        /* ハンバーガーメニュー用スタイル */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 999;
+        }
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-nav a {
+            color: var(--brand-navy);
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+        .mobile-nav a.bg-brand-orange {
+            color: white;
+        }
+        .close-button {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--brand-navy);
+        }
+
+        /* ヒーローセクション */
+        .hero-section{ 
+            position: relative; 
+            background-image: url('https://lh3.googleusercontent.com/d/1ksq_ZdfGQnK-GL4c4yua4ZEEanmEj4Jb'); 
+            background-size: cover; 
+            background-position: center 30%; 
+            background-color: var(--chalkboard-bg);
+            height: 150vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+        .hero-section.scrolled-past-hero::before {
+            opacity: 0;
+        }
+        
+        /* アニメーション */
+        .reveal { opacity:0; transform: translateY(30px); transition: opacity .8s, transform .8s; will-change: opacity, transform; }
+        .reveal.visible { opacity:1; transform: translateY(0); }
+        
+        /* Aboutセクション */
+        .about-bg { position: absolute; inset: 0; opacity: 0; transition: opacity 0.45s ease; background-repeat: no-repeat; background-size: cover; background-position: center; z-index: -1; }
+        .about-bg.is-visible { opacity: 1; }
+        .about-text-block { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(calc(-50% + 12px)); opacity: 0; will-change: opacity, transform; width: 100%; box-sizing: border-box; }
+        .about-text-block.text-left { margin-left: 0; margin-right: auto; }
+        .about-text-block.text-right { margin-left: auto; margin-right: 0; text-align: right; }
+        .sticky { position: sticky; top: 0; height: 100vh; z-index: 0; }
+        .about-scroll-wrapper:not(:first-child) { margin-top: calc(-1 * var(--section-overlap-vh)); }
+
+        .scroll-indicator { position: absolute; bottom: var(--indicator-bottom-position); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+        .scroll-indicator.visible { opacity: 1; }
+        .scroll-indicator path { stroke: white; stroke-width: 3; fill: none; opacity: 0.2; animation: chevron-fade 1.5s infinite; }
+        .scroll-indicator .chevron-2 { animation-delay: 0.2s; }
+        .scroll-indicator .chevron-3 { animation-delay: 0.4s; }
+        @keyframes chevron-fade { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+        /* FAQアコーディオン */
+        .faq-item details > summary {
+            list-style: none;
+        }
+        .faq-item details > summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item details .icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .faq-item details[open] .icon {
+            transform: rotate(45deg);
+        }
+
+        /* スマホ表示用の画像へのグラデーション */
+        .image-scrim-container {
+            position: relative;
+        }
+        @media (max-width: 767px) {
+            .image-scrim-container::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                background: linear-gradient(to top, #FDF9F2 20%, transparent 100%);
+                pointer-events: none;
+                z-index: 2;
+            }
+        }
+
+        /* スマホでのヒーロー画像の表示を調整 */
+        @media (max-width: 767px) {
+            .hero-section {
+                height: 60vh;
+                min-height: 0;
+            }
+        }
+
+        /* Swiper Styles */
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--brand-orange) !important;
+            background-color: rgba(255, 255, 255, 0.7);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 20px !important;
+            font-weight: bold;
+        }
+        .swiper-pagination-bullet-active {
+            background: var(--brand-orange) !important;
+            transform: scale(1.2);
+        }
+
+        /* 参加者の声 スライダー専用（PC版レイアウト修正） */
+        @media (min-width: 1024px) {
+            .voice-swiper {
+                padding: 0 100px !important; 
+                overflow: visible !important;
+            }
+            .voice-swiper .swiper-button-prev {
+                left: 20px !important; 
+            }
+            .voice-swiper .swiper-button-next {
+                right: 20px !important;
+            }
+        }
+
+        /* お知らせモーダル */
+        #news-modal {
+            transition: opacity 0.3s ease;
+        }
+        #news-modal.hidden {
+            pointer-events: none;
+        }
+        #modal-content-wrapper {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        #news-modal:not(.hidden) #modal-content-wrapper {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* お知らせアーカイブ */
+        #news-list .news-item:nth-of-type(n+4) {
+            display: none;
+        }
+        #news-list.expanded .news-item {
+            display: block;
+        }
+
+        /* PC版「参加者の声」用スタイル（3カラム＋開閉） */
+        #voice-list-pc .voice-item-extra {
+            display: none;
+        }
+        #voice-list-pc.expanded .voice-item-extra {
+            display: block;
+        }
+        .pop-reveal {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease-out, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: opacity, transform;
+        }
+        .pop-reveal.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* おすすめ器具ポップアップ */
+        #tools-modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        #tools-modal-content {
+            transition: transform 0.3s ease-out;
+            transform: scale(0.9);
+        }
+        #tools-modal-overlay:not(.hidden) #tools-modal-content {
+            transform: scale(1);
+        }
+
+        .tool-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .tool-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .tool-img-box {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            background: #FFFFFF;
+            padding: 10px;
+        }
+        .tool-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        @media (max-width: 639px) {
+            .tool-card { flex-direction: column; text-align: center; }
+            .tool-img-box { width: 100%; height: 160px; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZ6SPHC4"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <div id="loading-screen">
+        <div class="tofu-loader"></div>
+        <p class="loading-text">Loading...</p>
+    </div>
+
+    <svg class="absolute w-0 h-0" aria-hidden="true"><defs><clipPath id="curve" clipPathUnits="objectBoundingBox"><path d="M 0,0 L 1,0 L 1,1 C 0.7,0.9, 0.3,0.9, 0,1 L 0,0 Z"></path></clipPath></defs></svg>
+
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 header-top">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <a href="#" class="flex items-center space-x-3">
+                    <img src="https://lh3.googleusercontent.com/d/1W7QX6mIgUO8B0tnsxvTpk0njUeyAto09" alt="ロゴ" class="w-10 h-10 rounded-full border-2 border-white shadow-sm">
+                    <span class="site-title text-lg font-bold transition-colors duration-300">おとうふのじっけんしつ</span>
+                </a>
+            </div>
+            <div>
+                <nav class="hidden md:flex space-x-6 items-center font-bold text-sm">
+                    <a href="#points" class="transition-colors">当サービスについて</a>
+                    <a href="#experience" class="transition-colors">体験について</a>
+                    <a href="#flow" class="transition-colors">時間割</a>
+                    <a href="#voice" class="transition-colors">参加者の声</a>
+                    <a href="#faq" class="transition-colors">よくある質問</a>
+                    <a href="#access" class="transition-colors">アクセス</a>
+                    <a href="#contact" class="transition-colors">お問い合わせ</a>
+                    <a href="#reserve" class="bg-brand-orange text-white px-6 py-2 rounded-full hover:opacity-90 transition-opacity">予約する</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="hamburger-button" class="hamburger-button p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-nav" class="mobile-nav">
+        <button id="close-button" class="close-button"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        <a href="#points">当サービスについて</a>
+        <a href="#flow">時間割</a>
+        <a href="#experience">体験について</a>
+        <a href="#voice">参加者の声</a>
+        <a href="#faq">よくある質問</a>
+        <a href="#access">アクセス</a>
+        <a href="#contact">お問い合わせ</a>
+        <a href="#reserve" class="bg-brand-orange text-white px-8 py-3 rounded-full hover:opacity-90 transition-opacity">予約する</a>
+    </div>
+
+    <main>
+        <section class="hero-section text-white text-center px-4">
+            <div class="reveal relative z-10">
+                <div id="scroll-prompt" class="mt-20 opacity-100 transition-opacity duration-500">
+                    <a href="#about" class="inline-block animate-bounce">
+                        <span class="text-sm">スクロールしてはじめる</span>
+                        <svg class="w-6 h-6 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" class="py-20 md:py-24 bg-[#f0f4f8] relative z-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">お知らせ</h2>
+                </div>
+                <div class="max-w-3xl mx-auto reveal">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                        <div id="news-list">
+                            <div class="py-8 text-center text-gray-500 text-sm loading-placeholder">
+                                お知らせを読み込み中...
+                            </div>
+                        </div>
+                    </div>
+                    <div id="show-more-container" class="text-center mt-8 hidden">
+                        <button id="show-more-news" class="bg-brand-orange text-white font-bold px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
+                            過去のお知らせを見る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="about">
+            <section class="pt-20 md:pt-32 pb-12 md:pb-20 bg-white relative z-20" style="clip-path: url(#curve);">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy reveal">「お豆腐」って、なんだろう？</h2>
+                </div>
+            </section>
+            <div class="relative z-10 -mt-12 md:-mt-20">
+                <div class="sticky top-0 h-screen">
+                    <div id="about-bg-1" class="about-bg" style="background-image: linear-gradient(rgba(40,40,40,0.5), rgba(40,40,40,0.5)), url('https://lh3.googleusercontent.com/d/10w7t5WpSOb4PwkOB9jaDjQWTw7c5us8O');"></div>
+                    <div id="about-bg-2" class="about-bg" style="background-image: linear-gradient(rgba(40,40,40,0.5), rgba(40,40,40,0.5)), url('https://lh3.googleusercontent.com/d/1CAzhXg0wt_vC7WAUTqnqBhap0Qgw9XYa');"></div>
+                </div>
+                <div class="relative z-10 -mt-[100vh]">
+                    <div class="about-scroll-wrapper" data-bg="1">
+                        <div class="sticky top-0 h-screen flex items-center justify-center">
+                            <div class="container mx-auto px-6 h-full relative">
+                                <p class="about-text-block text-left w-full md:w-7/10 text-base md:text-lg leading-relaxed text-white p-8 text-shadow-strong" data-step="1">身近な食材だけど、意外と知らない豆腐の真の姿。<br class="hidden md:block">大豆が姿を変えていく様子を「化学実験」の視点でのぞいてみれば、<br class="hidden md:block">「なぜ？」が「わかった！」に変わるきらめきが待っています。</p>
+                                <p class="about-text-block text-right w-full md:w-7/10 text-base md:text-lg leading-relaxed text-white p-8 text-shadow-strong" data-step="2">そんな知的好奇心を満たす体験の先に、<br class="hidden md:block">私たちはもう一つの問いを持っています。<br class="hidden md:block">「今の子どもたち、そしてお父さんやお母さんは、<br class="hidden md:block">本当に美味しいできたてのお豆腐の味を知っているだろうか？」</p>
+                                <div class="scroll-indicator"><svg width="24" height="24" viewBox="0 0 24 24"><path class="chevron-1" d="M1 6 l11 11 l11 -11" /><path class="chevron-2" d="M1 11 l11 11 l11 -11" /><path class="chevron-3" d="M1 16 l11 11 l11 -11" /></svg></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-scroll-wrapper" data-bg="2">
+                        <div class="sticky top-0 h-screen flex items-center justify-center">
+                            <div class="container mx-auto px-6 h-full relative">
+                                <p class="about-text-block text-left w-full md:w-7/10 text-base md:text-lg leading-relaxed text-white p-8 text-shadow-strong" data-step="1">きらびやかな料理に目を奪われがちな今だからこそ、<br class="hidden md:block">日本の食卓を支えてきた伝統の味に触れてほしい。<br class="hidden md:block">大切なお子様に安心して食べさせられるよう、<br class="hidden md:block">農薬や化学肥料に頼らず育った自然栽培の大豆だけを使います。</p>
+                                <p class="about-text-block text-right w-full md:w-7/10 text-base md:text-lg leading-relaxed text-white p-8 text-shadow-strong" data-step="2">白衣をまとい、ビーカーを手にすれば、そこはもう特別な実験室。<br class="hidden md:block">自分の手で作った、温かくて安全な豆腐の格別な味を、<br class="hidden md:block">ぜひ体験しに来てください。</p>
+                                <div class="scroll-indicator"><svg width="24" height="24" viewBox="0 0 24 24"><path class="chevron-1" d="M1 6 l11 11 l11 -11" /><path class="chevron-2" d="M1 11 l11 11 l11 -11" /><path class="chevron-3" d="M1 16 l11 11 l11 -11" /></svg></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section id="points" class="relative py-20 md:py-24 bg-[#f0f4f8]" style="z-index: 30;">
+            <div class="absolute bottom-full left-0 w-full" style="line-height: 0;">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="width: 100%; height: 80px; fill: #f0f4f8;">
+                    <path d="M0,0 C150,120 350,0 600,60 C850,120 1050,0 1200,60 V120 H0 Z"></path>
+                </svg>
+            </div>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">「おとうふのじっけんしつ」とは？</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center reveal transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                        <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-full bg-orange-100">
+                            <img src="https://lh3.googleusercontent.com/d/1KgwM3x38DrLGXyzCB15s_oLSJql1VVfO" alt="気分は科学者 アイコン" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <h3 class="text-xl font-extrabold mb-4 brand-text-navy">気分は科学者</h3>
+                        <p class="text-sm text-gray-600">白衣に身を包めば、気分はすっかり研究者。豆腐のダイナミックな反応は化学の楽しみを知る絶好の教材です。</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center reveal transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style="transition-delay: 0.2s;">
+                        <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-full bg-blue-100">
+                            <img src="https://lh3.googleusercontent.com/d/1PQo8QpmiroPTAYXbqegvuUIjAjDqEDul" alt="自然栽培大豆 アイコン" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <h3 class="text-xl font-extrabold mb-4 brand-text-navy">自然栽培大豆</h3>
+                        <p class="text-sm text-gray-600">農薬や化学肥料を使わずに育った、生命力あふれる大豆が主役。豆本来の濃厚な甘みと香りを、ぜひ味わってください。</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center reveal transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style="transition-delay: 0.4s;">
+                        <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-full bg-green-100">
+                           <img src="https://lh3.googleusercontent.com/d/1xvuU-UvPvuOUyOhRSMGT35l38nT2LMI5" alt="できたてのお豆腐 アイコン" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <h3 class="text-xl font-extrabold mb-4 brand-text-navy">できたてのお豆腐</h3>
+                        <p class="text-sm text-gray-600">自分で作ったできたての豆腐の美味しさは格別！？市販の豆腐と比較しながら味わいましょう。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+       <section id="experience" class="py-20 md:py-24 bg-white overflow-hidden">
+          <div class="container mx-auto px-6">
+              <div class="text-center mb-16 reveal">
+                  <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">体験について</h2>
+              </div>
+              
+              <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 md:gap-x-8 md:items-start reveal">
+                  <div class="w-full h-full md:col-span-7 image-scrim-container">
+                      <div class="swiper-container experience-swiper rounded-lg shadow-lg overflow-hidden">
+                          <div class="swiper-wrapper">
+                              <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1fwQqtQXxipm4cpXUT64c8JF-qmXheGqK" alt="駒込ピペット" class="w-full h-full object-cover aspect-[4/3]"></div>
+                              <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/13-453-oNgFkoFiy_8Gi4VbJ9f3KC0daX" alt="親子" class="w-full h-full object-cover aspect-[4/3]"></div>
+                              <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1hy8zmbVg17QZwlURiSThk2HToVFGURVB" alt="豆腐混ぜシーン" class="w-full h-full object-cover aspect-[4/3]"></div>
+                          </div>
+                          <div class="swiper-pagination"></div>
+                          <div class="swiper-button-prev"></div>
+                          <div class="swiper-button-next"></div>
+                      </div>
+                  </div>
+
+                  <div class="bg-[#FDF9F2] p-8 md:p-10 rounded-lg shadow-lg border -mt-16 md:mt-[-300px] md:col-span-6 md:col-start-7 relative z-10">
+                      <h3 class="text-xl md:text-2xl font-extrabold brand-text-navy mb-6 text-center">体験内容</h3>
+                      <ul class="space-y-3 text-gray-700 text-sm md:text-base text-left">
+                          <li class="flex items-start">
+                              <svg class="w-5 h-5 text-brand-orange mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                              <span>豆腐に関する説明</span>
+                          </li>
+                          <li class="flex items-start">
+                              <svg class="w-5 h-5 text-brand-orange mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                              <span>自然栽培大豆を使った豆腐作り体験</span>
+                          </li>
+                          <li class="flex items-start">
+                              <svg class="w-5 h-5 text-brand-orange mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                              <span>できたて豆腐の試食 & おから茶の試飲</span>
+                          </li>
+                          <li class="flex items-start">
+                              <svg class="w-5 h-5 text-brand-orange mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                              <span>＜特典＞復習用お持ち帰りセット提供</span>
+                          </li>
+                      </ul>
+                      <div class="mt-6 text-xs text-gray-500 text-left">
+                          <p>※体験内容は状況によって変わる可能性がございます。</p>
+                          <p>※1組最大3名までとさせていただきます。</p>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="text-center mt-20 reveal">
+                  <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">料金プラン</h2>
+                  <p class="mt-4 text-xs text-gray-500">※2026年3月グランドオープン以降の価格です</p>
+              </div>
+              <div class="max-w-3xl mx-auto mt-12 text-left space-y-8">
+                  <div class="bg-[#FDF9F2] rounded-lg shadow-lg border p-8 space-y-6 reveal">
+                      <div class="pb-6 border-b border-gray-200">
+                          <div class="flex justify-between items-baseline">
+                              <div>
+                                  <h3 class="text-xl font-extrabold brand-text-navy flex items-center">親子プラン</h3>
+                                  <p class="text-gray-500 mt-1 text-sm leading-relaxed">
+                                      大人1名＋小学生以下1名のお値段です。<br>
+                                      <b>特典：</b>復習用セット(1組1セット) ＋ マニュアル配布
+                                  </p>
+                              </div>
+                              <p class="text-2xl font-bold brand-text-orange whitespace-nowrap pl-4">6,000<span class="text-base font-normal">円〜</span></p>
+                          </div>
+                      </div>
+                      <div class="pb-0">
+                          <div class="flex justify-between items-baseline">
+                              <div>
+                                  <h3 class="text-xl font-extrabold brand-text-navy">一般プラン</h3>
+                                  <p class="text-gray-500 mt-1 text-sm leading-relaxed">
+                                      中学生以上の大人の方1名のお値段です。<br>
+                                      <b>特典：</b>復習用セット(1組1セット) ＋ マニュアル配布
+                                  </p>
+                              </div>
+                              <p class="text-2xl font-bold brand-text-orange whitespace-nowrap pl-4">5,000<span class="text-base font-normal">円〜</span></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+        <section id="flow" class="py-20 md:py-24 bg-brand-navy">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white">実験の時間割<br class="sm:hidden">（体験の流れ）</h2>
+                    <p class="mt-2 text-gray-200 text-sm">約90分間のプログラムです。</p>
+                </div>
+                <div class="max-w-5xl mx-auto reveal">
+                    <picture>
+                        <source media="(min-width: 768px)" srcset="https://lh3.googleusercontent.com/d/1YE-4Mb_Kt8vVv5uWlPiRFYplROUZ5u99">
+                        <img src="https://lh3.googleusercontent.com/d/1WHWhc23NuZNRnOIK48emvYPtoEQGVaf7" alt="本日の時間割：1限 座学、2限 抽出、3限 凝固、4限 試食、5限 発表" class="w-full h-auto rounded-lg shadow-xl">
+                    </picture>
+                </div>
+            </div>
+        </section>
+
+        <section id="reserve" class="py-20 md:py-32 bg-[#f0f4f8]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">さあ、おいしい実験をはじめよう。</h2>
+                    <p class="mt-4 text-sm text-gray-600">2026年3月 グランドオープン！ご予約をお待ちしております。</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-white rounded-lg p-4 md:p-8 reveal border">
+                    <div class="text-center text-gray-800">
+                        <h3 class="text-2xl font-extrabold brand-text-navy mb-4">予約カレンダー</h3>
+                        <p class="mb-6 text-sm text-gray-600">ご希望の日時とプランを選択して、予約を完了してください。</p>
+                        <script src='https://square.site/appointments/buyer/widget/h0gx1dzure0hyh/LCF88725CB6GG.js'></script>
+                    </div>
+
+                    <div class="mt-12 pt-8 border-t border-gray-300">
+                        <div class="bg-[#FDF9F2] rounded-lg p-6 md:p-8 shadow-md border border-gray-200 relative">
+                            <h3 class="text-xl font-bold brand-text-navy mb-4 text-center">最新の空き状況</h3>
+
+                            <div class="mb-6 bg-white rounded-lg border border-gray-200 overflow-hidden max-w-lg mx-auto">
+                                <table class="w-full text-sm text-center">
+                                    <thead class="bg-brand-navy text-white">
+                                        <tr>
+                                            <th class="py-2 px-2 font-bold w-1/3">開催日</th>
+                                            <th class="py-2 px-2 font-bold w-1/3">10:00</th>
+                                            <th class="py-2 px-2 font-bold w-1/3">13:00</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="availability-table-body" class="text-gray-700 divide-y divide-gray-100">
+                                        <tr><td colspan="3" class="py-4 text-xs text-gray-500">データを読み込み中...</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="p-3 bg-gray-50 text-center border-t border-gray-100">
+                                    <div class="mb-2 text-xs text-gray-500">
+                                        <span class="inline-flex items-center mr-3"><span class="text-brand-orange text-base font-bold mr-1">○</span>受付中</span>
+                                        <span class="inline-flex items-center"><span class="text-gray-300 text-base font-bold mr-1">×</span>満席</span>
+                                    </div>
+                                    <p class="text-[10px] text-gray-400 leading-tight">
+                                        空き状況の更新は手動のため、実際の予約状況と異なる（反映が遅れる）場合がございます。<br>
+                                        確実な空き状況は、上の「予約カレンダー」をご確認ください。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold brand-text-navy mb-4 text-center">優先案内・キャンセル待ち</h3>
+
+                            <form id="waitlist-form" class="space-y-4 max-w-lg mx-auto">
+                                <div class="mb-4">
+                                    <label class="block text-xs font-bold text-gray-700 mb-2">ご希望の通知内容（複数選択可）</label>
+                                    <div class="space-y-2 bg-white p-4 border border-gray-200 rounded shadow-sm">
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="checkbox" name="isPriority" value="true" class="w-4 h-4 text-brand-orange border-gray-300 rounded focus:ring-brand-orange" checked>
+                                            <span class="ml-2 text-sm text-gray-700">次回の予約開始のお知らせ（優先案内）を受け取る</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="checkbox" id="check-waitlist" name="isWaitlist" value="true" class="w-4 h-4 text-brand-orange border-gray-300 rounded focus:ring-brand-orange">
+                                            <span class="ml-2 text-sm text-gray-700">特定の日時のキャンセル待ちをする</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">お名前</label>
+                                        <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">メールアドレス</label>
+                                        <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                    </div>
+                                </div>
+                                
+                                <div id="waitlist-datetime-section" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden mt-4 pt-4 border-t border-dashed border-gray-200">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">希望日</label>
+                                        <select name="date" id="date-select" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                            <option value="">データを読み込み中...</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">希望時間</label>
+                                        <select name="time" id="time-select" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                            <option value="">選択してください</option>
+                                            <option value="10:00">10:00〜11:30</option>
+                                            <option value="13:00">13:00〜14:30</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-center items-center pt-4">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="privacy-check" required class="w-4 h-4 text-brand-orange border-gray-300 rounded focus:ring-brand-orange cursor-pointer bg-white">
+                                        <label for="privacy-check" class="ml-2 text-sm text-gray-700 cursor-pointer">
+                                            <a href="★ここにGoogleサイトで作ったプライバシーポリシーのURLを貼り付け★" target="_blank" class="text-brand-orange underline hover:opacity-80">プライバシーポリシー</a>に同意する
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="text-center pt-2">
+                                    <button type="submit" id="waitlist-submit" class="bg-brand-orange text-white font-bold px-6 py-2 rounded-full hover:opacity-90 text-sm shadow-md transition-transform transform hover:scale-105">登録する</button>
+                                </div>
+                                <p id="waitlist-status" class="text-center text-xs mt-2"></p>
+                                
+                                <div class="text-center mt-4">
+                                    <button type="button" onclick="showCancelForm()" class="text-xs text-gray-400 underline hover:text-gray-600">
+                                        登録内容を取り消し・解除する場合はこちら
+                                    </button>
+                                </div>
+                            </form>
+
+                            <form id="cancel-waitlist-form" class="space-y-4 max-w-lg mx-auto hidden mt-6 pt-6 border-t border-dashed border-gray-300">
+                                <h4 class="text-center font-bold text-gray-700 mb-2">登録内容の取り消し・解除</h4>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-xs font-bold text-gray-700 mb-1">解除する項目を選択</label>
+                                    <select name="cancelTarget" id="cancel-target-select" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange text-sm bg-white">
+                                        <option value="priority">優先案内リストの配信解除</option>
+                                        <option value="waitlist">キャンセル待ちの取り消し</option>
+                                    </select>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">メールアドレス</label>
+                                        <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                    </div>
+                                    <div id="cancel-date-section" class="hidden">
+                                        <label class="block text-xs font-bold text-gray-700 mb-1">キャンセル待ち希望日</label>
+                                        <input type="date" name="date" id="cancel-date-input" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange text-sm bg-white">
+                                    </div>
+                                </div>
+                                <div class="text-center pt-2 flex justify-center gap-4">
+                                    <button type="button" onclick="hideCancelForm()" class="text-xs text-gray-500 hover:text-gray-800">閉じる</button>
+                                    <button type="submit" id="cancel-submit" class="bg-gray-500 text-white font-bold px-6 py-2 rounded-full hover:opacity-90 text-sm">実行する</button>
+                                </div>
+                                <p id="cancel-status" class="text-center text-xs mt-2"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+         <section id="voice" class="py-20 md:py-24 bg-white relative z-20 overflow-hidden">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">参加者の声</h2>
+                    <p class="mt-4 text-sm text-gray-600">実際に体験されたご家族の感想をご紹介します。</p>
+                </div>
+                
+                <div class="md:hidden">
+                    <div class="swiper-container voice-swiper !overflow-visible reveal">
+                        <div id="voice-swiper-wrapper" class="swiper-wrapper">
+                            </div>
+                        <div class="swiper-pagination id-voice-pagination !-bottom-10"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+
+                <div class="hidden md:block">
+                    <div id="voice-list-pc" class="grid grid-cols-3 gap-8 items-stretch">
+                        </div>
+                    <div class="text-center mt-12">
+                        <button id="show-more-voice" class="bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 transition-all shadow-md">もっと感想を見る</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 md:py-24" style="background-color: var(--brand-navy);">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white">よくある質問</h2>
+                </div>
+                <div class="space-y-4 reveal">
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                支払い方法は何が使えますか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>クレジットカードのみとなります。体験当日にお支払いいただきます。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                何歳から参加できますか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>安全性を考慮し、調理にご参加いただけるのは4歳以上のお子様とさせていただいております。4歳未満のお子様も見学は可能ですが、保護者の方の監督をお願いいたします。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                大人だけの参加は可能ですか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>可能です。資料はお子様向けとなっていますので、あらかじめご了承ください。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                何名から参加できますか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>お一人様からご参加いただけます。一組最大三名まででお願いします。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                持ち物はありますか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>大人の方はエプロンをご持参ください。お子様には白衣をお貸し出しします。食材が飛び散る可能性があるため、汚れても良い服、靴でお越しください。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                予約のキャンセルはできますか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>キャンセルは予約日の3日前までにお願いいたします。2日前からのキャンセルは料金の50%、当日のキャンセルは100%のキャンセル料が発生いたしますので、あらかじめご了承ください。</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="faq-item bg-white p-5 rounded-lg shadow-sm border">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer font-bold text-gray-800">
+                                豆腐のお持ち帰りは可能ですか？
+                                <span class="icon text-brand-orange transform transition-transform duration-300">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 text-sm">
+                                <p>原則、体験内で食していただきます。</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="notes" class="relative bg-white pt-24 pb-20 md:pt-32 md:pb-24">
+             <div class="absolute top-0 left-0 w-full" style="line-height: 0; transform: translateY(-1px);">
+                <svg class="md:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none" style="width: 100%; height: 40px; fill: var(--brand-navy);">
+                    <path d="M0,0 L10,10 L20,0 L30,10 L40,0 L50,10 L60,0 L70,10 L80,0 L90,10 L100,0 Z"/>
+                </svg>
+                <svg class="hidden md:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none" style="width: 100%; height: 40px; fill: var(--brand-navy);">
+                    <path d="M0,0 L5,10 L10,0 L15,10 L20,0 L25,10 L30,0 L35,10 L40,0 L45,10 L50,0 L55,10 L60,0 L65,10 L70,0 L75,10 L80,0 L85,10 L90,0 L95,10 L100,0 Z"/>
+                </svg>
+            </div>
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">注意事項・免責事項</h2>
+                </div>
+                <p class="text-center text-gray-700 text-sm mb-8 reveal">お客様に安全に楽しんでいただくため、以下の点にご協力・ご理解をお願いいたします。</p>
+                <div class="bg-[#FDF9F2] rounded-lg shadow-lg border p-8 space-y-8 text-gray-700 reveal text-left text-sm">
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">アレルギーについて</h3><p>本体験では大豆を使用します。重篤な大豆アレルギーをお持ちの方は、安全のためご参加をお控えください。その他のアレルギーについては、ご自身の責任においてご参加いただけますようお願いいたします。ご不明点があればお気軽にお問い合わせフォームよりご連絡ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">服装について</h3><p>作業中に衣類が汚れる可能性がございます。汚れても良い服装でお越しください。お子様には白衣を貸出ししますので、予約手続きの最後の『予約に関するメモ』欄に、ご参加されるお子様の身長をご記入ください。大人の方へは白衣・エプロンの貸し出しはないため、エプロンをご持参ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">遅刻について</h3><p>体験は定刻通りに開始いたします。開始時間の5分前にお越しください。やむを得ず遅れる場合は、必ずご連絡ください。15分以上遅刻された場合、体験の一部に参加できない、または参加をお断りする場合がございます。その場合もキャンセル料の対象となりますのでご注意ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">安全管理について</h3><p>体験中は講師の指示に従い、安全に作業を行ってください。万痕が一、体験中にお怪我をされた場合は応急処置を行いますが、その後の責任は負いかねますので、十分にご注意ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">写真・動画の撮影について</h3><p>体験の様子をスタッフが撮影し、当店のウェブサイトやSNS等で紹介させていただく場合がございます。お顔の掲載にご承諾いただけない場合は、当日スタッフまで遠慮なくお申し付けください。</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="access" class="py-20 md:py-24 bg-[#f0f4f8]">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">アクセス</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-stretch">
+                    <div class="flex flex-col gap-6 w-full md:h-full reveal">
+                        <div class="bg-white p-8 rounded-lg shadow-md border">
+                            <h3 class="text-xl font-bold brand-text-navy mb-4">おとうふのじっけんしつ</h3>
+                            <p class="text-gray-700 mb-2">〒130-0002<br>東京都墨田区業平5-10-2 路地入ル<br>黒柴カフェ（シェアキッチン）</p>
+                            <h4 class="font-bold text-gray-800 mb-2 mt-4">アクセス:</h4>
+                            <p class="text-gray-700 text-sm">半蔵門線・都営浅草線・京成線・東武線<br>「押上駅」B1出口より徒歩5分</p>
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-md border h-[300px] md:h-auto md:flex-grow relative min-h-[300px]">
+                            <iframe src="https://maps.google.com/maps?q=東京都墨田区業平5-10-2+路地入ルの黒柴カフェ&t=&z=15&ie=UTF8&iwloc=&output=embed" class="absolute inset-0 w-full h-full" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="reveal w-full md:h-full min-h-[300px] md:min-h-[400px]">
+                        <div class="rounded-lg overflow-hidden shadow-md border h-full bg-white relative">
+                             <div class="swiper-container access-swiper h-full w-full">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="https://lh3.googleusercontent.com/d/1kMVWahUU1zUPAJz0dw9gP5OD7BjTBLFB" alt="入口" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="https://lh3.googleusercontent.com/d/1bCRpvwMSR4mg_FUpzt8FFLzMYEB4XnP1" alt="内装" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-extrabold brand-text-navy">お問い合わせ</h2>
+                    <p class="mt-4 text-sm text-gray-600">ご質問やご相談など、お気軽にお問い合わせください。</p>
+                </div>
+                <div class="reveal">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-bold text-gray-700 mb-2">お名前</label>
+                            <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="例：大豆 太郎">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">メールアドレス</label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="例：soybean@example.com">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-bold text-gray-700 mb-2">お問い合わせ内容</label>
+                            <textarea id="message" name="message" rows="6" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="こちらにお問い合わせ内容をご記入ください。"></textarea>
+                        </div>
+                        <div class="hidden">
+                            <label for="honeypot">If you are a human, leave this field blank.</label>
+                            <input type="text" id="honeypot" name="honeypot" tabindex="-1">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" id="submit-button" class="bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 transition-opacity w-full md:w-auto">
+                                送信する
+                            </button>
+                            <p id="form-status" class="mt-4 text-sm text-gray-600"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="news-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center bg-black bg-opacity-50 p-4">
+        <div id="modal-content-wrapper" class="w-full max-w-2xl">
+            <div id="modal-content" class="bg-white rounded-lg shadow-xl max-h-[80vh] overflow-y-auto p-8 relative">
+                <button id="modal-close-button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <h3 id="modal-title" class="text-xl md:text-2xl font-extrabold brand-text-navy mb-2"></h3>
+                <p id="modal-date" class="text-sm text-gray-500 mb-6"></p>
+                <div id="modal-body" class="text-gray-700 leading-relaxed space-y-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-12" style="background-color: var(--brand-navy);">
+        <div class="container mx-auto px-6 text-center text-gray-300">
+            <div class="flex justify-center space-x-6 mb-4"><a href="https://www.instagram.com/lab_tofu/" target="_blank" rel="noopener noreferrer"><img src="https://lh3.googleusercontent.com/d/1syl6ofL9SBdiO_IudnnXdDFxxMiayltK" alt="Instagram" class="w-8 h-8 transition-opacity hover:opacity-80"></a></div>
+            <div class="mb-6">
+                <a href="https://sites.google.com/view/labtofu/tokusho" target="_blank" rel="noopener noreferrer" class="text-[10px] text-gray-400 hover:text-white transition-colors underline decoration-gray-500">特定商取引法に基づく表記</a>
+            </div>
+            <p class="text-sm">© 2025-2026 おとうふのじっけんしつ. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+    // ★重要設定：新しくデプロイするGASウェブアプリのURLをここに貼り付けます
+    const GAS_API_URL = '★ここに新しくデプロイするGASのウェブアプリURLを貼り付け★';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- GTM用 イベント送信コード ---
+        function trackEvent(eventName, params = {}) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': eventName,
+                ...params
+            });
+            console.log(`GTMにデータ送信: ${eventName}`, params);
+        }
+
+        const headerLinks = document.querySelectorAll('header nav a, .mobile-nav a');
+        headerLinks.forEach(link => {
+            if (link.getAttribute('href') === '#reserve') return; 
+
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const sectionId = href.substring(1);
+                    trackEvent('menu_click', {
+                        'section_id': sectionId,
+                        'link_text': link.textContent.trim()
+                    });
+                }
+            });
+        });
+
+        const reserveButtons = document.querySelectorAll('a[href="#reserve"]');
+        reserveButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                trackEvent('click_reserve_button', {
+                    'button_text': button.textContent.trim()
+                });
+            });
+        });
+
+        // --- 動的データの非同期読み込み (ヘッドレス構成用) ---
+        function loadDynamicData() {
+            fetch(`${GAS_API_URL}?action=init`)
+            .then(res => res.json())
+            .then(data => {
+                // 1. 構造化データ (SEO用) の挿入
+                if (data.eventsJson) {
+                    const scriptJson = document.createElement('script');
+                    scriptJson.type = 'application/ld+json';
+                    scriptJson.text = JSON.stringify(data.eventsJson);
+                    document.head.appendChild(scriptJson);
+                }
+
+                // 2. お知らせ (News) の生成
+                const newsList = document.getElementById('news-list');
+                if (newsList && data.newsData) {
+                    newsList.innerHTML = '';
+                    if (data.newsData.length === 0) {
+                        newsList.innerHTML = '<div class="py-8 text-center text-gray-500 text-sm">お知らせはまだありません。</div>';
+                    } else {
+                        data.newsData.forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'news-item block py-6 px-6 border-b border-gray-200 hover:bg-gray-50 transition duration-300 last:border-b-0 cursor-pointer';
+                            div.dataset.detail = item.detail;
+                            div.innerHTML = `
+                                <div class="flex items-center space-x-4 md:space-x-6">
+                                    <time class="text-sm font-bold brand-text-navy w-24 text-center flex-shrink-0">${item.date}</time>
+                                    <p class="news-title text-gray-800 font-medium flex-grow">${item.title}</p>
+                                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                            `;
+                            // モーダルイベントの付与
+                            div.addEventListener('click', () => {
+                                const newsModal = document.getElementById('news-modal');
+                                if(newsModal) {
+                                    document.getElementById('modal-title').textContent = item.title;
+                                    document.getElementById('modal-date').textContent = item.date;
+                                    document.getElementById('modal-body').innerHTML = item.detail.replace(/\n/g, '<br>');
+                                    newsModal.classList.remove('hidden');
+                                    document.body.style.overflow = 'hidden';
+                                }
+                            });
+                            newsList.appendChild(div);
+                        });
+                        
+                        // お知らせ表示件数制御
+                        const showMoreContainer = document.getElementById('show-more-container');
+                        if (data.newsData.length > 3 && showMoreContainer) {
+                            showMoreContainer.classList.remove('hidden');
+                        }
+                    }
+                }
+
+                // 3. 最新の空き状況表の生成
+                const tableBody = document.getElementById('availability-table-body');
+                if (tableBody && data.availabilityData) {
+                    tableBody.innerHTML = '';
+                    if (data.availabilityData.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="3" class="py-4 text-xs text-gray-500">現在、開催予定がありません</td></tr>';
+                    } else {
+                        data.availabilityData.forEach(row => {
+                            const tr = document.createElement('tr');
+                            const amMark = (row.am == 0) ? '<span class="text-brand-orange font-bold text-lg">○</span>' : '<span class="text-gray-300 font-bold text-lg">×</span>';
+                            const pmMark = (row.pm == 0) ? '<span class="text-brand-orange font-bold text-lg">○</span>' : '<span class="text-gray-300 font-bold text-lg">×</span>';
+                            tr.innerHTML = `
+                                <td class="py-3 px-2 border-b border-gray-100 font-bold brand-text-navy">${row.date}</td>
+                                <td class="py-3 px-2 border-b border-gray-100">${amMark}</td>
+                                <td class="py-3 px-2 border-b border-gray-100">${pmMark}</td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    }
+                }
+
+                // 4. キャンセル待ちプルダウン日付の生成
+                const dateSelect = document.getElementById('date-select');
+                if (dateSelect && data.futureEventDates) {
+                    dateSelect.innerHTML = '<option value="">日付を選択してください</option>';
+                    if (data.futureEventDates.length === 0) {
+                        dateSelect.innerHTML = '<option value="">現在、予約可能な日程がありません</option>';
+                    } else {
+                        data.futureEventDates.forEach(d => {
+                            const option = document.createElement('option');
+                            option.value = d.value;
+                            option.textContent = d.display;
+                            dateSelect.appendChild(option);
+                        });
+                    }
+                }
+
+                // 5. 参加者の声 (Voice) の動的生成
+                const swiperWrapper = document.getElementById('voice-swiper-wrapper');
+                const voicePcGrid = document.getElementById('voice-list-pc');
+                
+                if (data.voiceData && data.voiceData.length > 0) {
+                    if(swiperWrapper) swiperWrapper.innerHTML = '';
+                    if(voicePcGrid) voicePcGrid.innerHTML = '';
+
+                    data.voiceData.forEach((v, index) => {
+                        let bgClass = 'bg-orange-100';
+                        let textClass = 'text-brand-orange';
+                        if (v.color === 'blue') { bgClass = 'bg-blue-100'; textClass = 'text-blue-500'; }
+                        else if (v.color === 'green') { bgClass = 'bg-green-100'; textClass = 'text-green-600'; }
+
+                        const innerCardHtml = `
+                            <div class="flex items-center mb-4 pb-4 border-b border-gray-200 border-dashed">
+                                <div class="w-12 h-12 ${bgClass} rounded-full flex items-center justify-center mr-4 ${textClass}">
+                                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold brand-text-navy">${v.name}</h3>
+                                    <div class="text-xs text-gray-500">${v.attr}</div>
+                                </div>
+                            </div>
+                            ${v.textChild ? `
+                                <div class="text-gray-700 text-sm space-y-2 flex-grow">
+                                    <p><span class="font-bold text-brand-orange text-xs">お子様</span><br>${v.textChild}</p>
+                                    <p><span class="font-bold text-brand-navy text-xs">保護者様</span><br>${v.textParent}</p>
+                                </div>
+                            ` : `
+                                <p class="text-gray-700 text-sm leading-relaxed flex-grow">${v.textParent}</p>
+                            `}
+                        `;
+
+                        // スマホスライダー版の追加
+                        if (swiperWrapper) {
+                            const slide = document.createElement('div');
+                            slide.className = 'swiper-slide h-auto';
+                            slide.innerHTML = `<div class="bg-[#FDF9F2] p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col h-full mx-2">${innerCardHtml}</div>`;
+                            swiperWrapper.appendChild(slide);
+                        }
+
+                        // PCグリッド版の追加
+                        if (voicePcGrid) {
+                            const card = document.createElement('div');
+                            card.className = `reveal ${index >= 3 ? 'voice-item-extra' : ''}`;
+                            card.style.transitionDelay = `${(index % 3) * 0.1}s`;
+                            card.innerHTML = `<div class="bg-[#FDF9F2] p-8 rounded-xl shadow-lg border h-full flex flex-col">${innerCardHtml}</div>`;
+                            voicePcGrid.appendChild(card);
+                            revealObserver.observe(card); // Observerへの再登録
+                        }
+                    });
+
+                    // スライダーとPC開閉ボタンの再初期化
+                    voiceSwiper.update();
+                }
+            })
+            .catch(err => {
+                console.error('データフェッチに失敗しました:', err);
+            })
+            .finally(() => {
+                // データの読み込みが終わったらローディングを外す
+                const loader = document.getElementById('loading-screen');
+                if(loader) loader.classList.add('loaded');
+            });
+        }
+
+        // ページ読み込み時にデータ取得を開始
+        if (GAS_API_URL && !GAS_API_URL.includes('★ここに')) {
+            loadDynamicData();
+        } else {
+            // URLが未設定の暫定措置
+            const loader = document.getElementById('loading-screen');
+            if(loader) loader.classList.add('loaded');
+        }
+
+        // --- 既存UI制御コード ---
+        const SCROLL_DURATION_VH = 300;
+        const header = document.getElementById('header');
+        const scrollPrompt = document.getElementById('scroll-prompt');
+        const heroSection = document.querySelector('.hero-section');
+        const handleHeader = () => {
+            if (!header) return;
+            const scrolled = window.scrollY > 50;
+            header.classList.toggle('header-scrolled', scrolled);
+            header.classList.toggle('header-top', !scrolled);
+
+            const isScrolledDown = window.scrollY > 30;
+            if (scrollPrompt) scrollPrompt.style.opacity = isScrolledDown ? '0' : '1';
+            if (heroSection) heroSection.classList.toggle('scrolled-past-hero', isScrolledDown);
+        };
+        window.addEventListener('scroll', handleHeader);
+        handleHeader();
+
+        const hamburgerBtn = document.getElementById('hamburger-button');
+        const closeBtn = document.getElementById('close-button');
+        const mobileNav = document.getElementById('mobile-nav');
+        const mobileNavLinks = mobileNav.querySelectorAll('a');
+        
+        const openNav = () => mobileNav.classList.add('active');
+        const closeNav = () => mobileNav.classList.remove('active');
+
+        hamburgerBtn.addEventListener('click', openNav);
+        closeBtn.addEventListener('click', closeNav);
+        
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeNav);
+        });
+
+        const reveals = document.querySelectorAll('.reveal, .pop-reveal'); 
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        reveves = document.querySelectorAll('.reveal, .pop-reveal');
+        reveals.forEach(r => revealObserver.observe(r));
+
+        const bg1 = document.getElementById('about-bg-1');
+        const bg2 = document.getElementById('about-bg-2');
+        const wrappers = document.querySelectorAll('.about-scroll-wrapper');
+
+        wrappers.forEach(w => {
+            w.style.height = `${SCROLL_DURATION_VH}vh`;
+        });
+
+        function hideAllTexts(wrapper) {
+            wrapper.querySelectorAll('.about-text-block').forEach(t => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(calc(-50% + 12px))';
+            });
+            const indicator = wrapper.querySelector('.scroll-indicator');
+            if (indicator) indicator.classList.remove('visible');
+        }
+        
+        function updateTextVisibility(wrapper, progress) {
+            const texts = wrapper.querySelectorAll('.about-text-block');
+            const indicator = wrapper.querySelector('.scroll-indicator');
+            const steps = texts.length;
+            if (steps === 0) return;
+
+            if (indicator) {
+                indicator.classList.toggle('visible', progress > 0.05 && progress < 0.95);
+            }
+
+            const fadeInPortion = 0.05;
+            const holdPortion = 0.75;
+            const fadeOutPortion = 0.20;
+            const stepDuration = 1.0 / steps;
+
+            texts.forEach(t => {
+                const step = parseInt(t.dataset.step, 10);
+                const stepStart = (step - 1) * stepDuration;
+                const fadeInEnd = stepStart + (stepDuration * fadeInPortion);
+                const holdEnd = fadeInEnd + (stepDuration * holdPortion);
+                const fadeOutEnd = holdEnd + (stepDuration * fadeOutPortion);
+                let opacity = 0;
+                if (progress >= stepStart && progress < fadeInEnd) {
+                    const phaseProgress = (progress - stepStart) / (fadeInEnd - stepStart);
+                    opacity = phaseProgress;
+                } else if (progress >= fadeInEnd && progress < holdEnd) {
+                    opacity = 1.0;
+                } else if (progress >= holdEnd && progress < fadeOutEnd) {
+                    const phaseProgress = (progress - holdEnd) / (fadeOutEnd - holdEnd);
+                    opacity = 1.0 - phaseProgress;
+                }
+                opacity = Math.max(0, Math.min(1, opacity));
+                t.style.opacity = opacity;
+                const yOffset = (1 - opacity) * 12;
+                t.style.transform = `translateY(calc(-50% + ${yOffset}px))`;
+            });
+        }
+
+        function updateBackgroundVisibility(activeWrapper) {
+            const bg = activeWrapper ? activeWrapper.dataset.bg : null;
+            if(bg1) bg1.classList.toggle('is-visible', bg === '1');
+            if(bg2) bg2.classList.toggle('is-visible', bg === '2');
+        }
+
+        function onAboutScroll() {
+            let activeWrapper = null;
+            let bgWrapper = null;
+
+            wrappers.forEach(w => {
+                const rect = w.getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    bgWrapper = w;
+                }
+                if (rect.top <= 0) {
+                    activeWrapper = w;
+                }
+            });
+
+            updateBackgroundVisibility(bgWrapper);
+
+            wrappers.forEach(w => {
+                const rect = w.getBoundingClientRect();
+                if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                    if (w === activeWrapper) {
+                        const scrollableHeight = w.scrollHeight - window.innerHeight;
+                        if (scrollableHeight > 0) {
+                            const progress = Math.abs(rect.top) / scrollableHeight;
+                            updateTextVisibility(w, Math.max(0, Math.min(1, progress)));
+                        }
+                    }
+                } else {
+                    hideAllTexts(w);
+                }
+            });
+        }
+        
+        let isTicking = false;
+        const handleScroll = () => {
+            if (!isTicking) {
+                window.requestAnimationFrame(() => {
+                    onAboutScroll();
+                    isTicking = false;
+                });
+                isTicking = true;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', onAboutScroll);
+        onAboutScroll();
+
+        const experienceSwiper = new Swiper('.experience-swiper', {
+            loop: true,
+            autoplay: { delay: 4000, disableOnInteraction: false },
+            pagination: { el: '.experience-swiper .swiper-pagination', clickable: true },
+            navigation: { nextEl: '.experience-swiper .swiper-button-next', prevEl: '.experience-swiper .swiper-button-prev' },
+        });
+
+        const voiceSwiper = new Swiper('.voice-swiper', {
+            loop: true,
+            centeredSlides: true,
+            spaceBetween: 10,
+            slidesPerView: 1.2,
+            autoplay: false,
+            loopedSlides: 5, 
+            breakpoints: {
+                768: { slidesPerView: 2.5, centeredSlides: false, spaceBetween: 20, loopedSlides: 5 },
+                1024: { slidesPerView: 3, centeredSlides: true, spaceBetween: 30, loopedSlides: 5 }
+            },
+            navigation: { nextEl: '.voice-swiper .swiper-button-next', prevEl: '.voice-swiper .swiper-button-prev' },
+            pagination: { el: '.voice-swiper .swiper-pagination', clickable: true },
+        });
+
+        const accessSwiper = new Swiper('.access-swiper', {
+            loop: true,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            pagination: { el: '.access-swiper .swiper-pagination', clickable: true },
+            navigation: { nextEl: '.access-swiper .swiper-button-next', prevEl: '.access-swiper .swiper-button-prev' },
+        });
+
+        // モーダルクローズ処理 (一覧生成処理はフェッチ内に移動)
+        const newsModal = document.getElementById('news-modal');
+        if(newsModal) {
+            const modalCloseButton = document.getElementById('modal-close-button');
+            const closeModal = () => { newsModal.classList.add('hidden'); document.body.style.overflow = ''; };
+            if(modalCloseButton) modalCloseButton.addEventListener('click', closeModal);
+            newsModal.addEventListener('click', (e) => { if (e.target === newsModal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !newsModal.classList.contains('hidden')) closeModal(); });
+        }
+
+        const newsList = document.getElementById('news-list');
+        const showMoreButton = document.getElementById('show-more-news');
+        if (showMoreButton && newsList) {
+            showMoreButton.addEventListener('click', () => {
+                if (newsList.classList.contains('expanded')) {
+                    newsList.classList.remove('expanded');
+                    showMoreButton.textContent = '過去のお知らせを見る';
+                    document.getElementById('news').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    newsList.classList.add('expanded');
+                    showMoreButton.textContent = '閉じる';
+                }
+            });
+        }
+
+        // --- お問い合わせフォーム送信処理 ---
+        const contactForm = document.getElementById('contact-form');
+        const submitButton = document.getElementById('submit-button');
+        const formStatus = document.getElementById('form-status');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            trackEvent('form_submit', { form_name: 'contact' });
+
+            if (!GAS_API_URL || GAS_API_URL.includes('★ここに')) {
+                 formStatus.textContent = 'システム通信URLが正しく設定されていません。';
+                 formStatus.style.color = 'red';
+                 return;
+            }
+
+            const formData = new FormData(contactForm);
+            formData.append('formType', 'contact'); 
+            
+            if (formData.get('honeypot')) return; 
+
+            submitButton.disabled = true;
+            submitButton.textContent = '送信中...';
+            formStatus.textContent = '';
+
+            fetch(GAS_API_URL, { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    formStatus.textContent = 'お問い合わせいただきありがとうございます。メッセージは正常に送信されました。';
+                    formStatus.style.color = 'green';
+                    contactForm.reset();
+                } else {
+                    throw new Error(data.message || '送信に失敗しました。');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                formStatus.textContent = 'エラーが発生しました。時間をおいて再度お試しください。';
+                formStatus.style.color = 'red';
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = '送信する';
+            });
+        });
+    });
+
+    window.toggleWaitlistForm = function(mode) {
+        const regForm = document.getElementById('waitlist-form');
+        const cancelForm = document.getElementById('cancel-waitlist-form');
+        const btnReg = document.getElementById('btn-register');
+        const btnCancel = document.getElementById('btn-cancel');
+
+        if (mode === 'register') {
+            regForm.classList.remove('hidden');
+            cancelForm.classList.add('hidden');
+            btnReg.classList.add('bg-brand-navy', 'text-white');
+            btnReg.classList.remove('bg-gray-200', 'text-gray-600');
+            btnCancel.classList.add('bg-gray-200', 'text-gray-600');
+            btnCancel.classList.remove('bg-brand-navy', 'text-white');
+        } else {
+            regForm.classList.add('hidden');
+            cancelForm.classList.remove('hidden');
+            btnReg.classList.add('bg-gray-200', 'text-gray-600');
+            btnReg.classList.remove('bg-brand-navy', 'text-white');
+            btnCancel.classList.add('bg-brand-navy', 'text-white');
+            btnCancel.classList.remove('bg-gray-200', 'text-gray-600');
+        }
+    };
+
+    const checkWaitlist = document.getElementById('check-waitlist');
+    const waitlistSection = document.getElementById('waitlist-datetime-section');
+    const dateInput = document.getElementById('date-select');
+    const timeInput = document.getElementById('time-select');
+    if(checkWaitlist) {
+        checkWaitlist.addEventListener('change', function() {
+            if (this.checked) {
+                waitlistSection.classList.remove('hidden');
+                dateInput.required = true;
+                timeInput.required = true;
+            } else {
+                waitlistSection.classList.add('hidden');
+                dateInput.required = false;
+                timeInput.required = false;
+            }
+        });
+    }
+
+    const cancelTargetSelect = document.getElementById('cancel-target-select');
+    const cancelDateSection = document.getElementById('cancel-date-section');
+    const cancelDateInput = document.getElementById('cancel-date-input');
+    if(cancelTargetSelect) {
+        cancelTargetSelect.addEventListener('change', function() {
+            if (this.value === 'waitlist') {
+                cancelDateSection.classList.remove('hidden');
+                cancelDateInput.required = true;
+            } else {
+                cancelDateSection.classList.add('hidden');
+                cancelDateInput.required = false;
+            }
+        });
+    }
+
+    function submitWaitlist(formId, btnId, statusId) {
+        const form = document.getElementById(formId);
+        if (!form) return; 
+
+        const btn = document.getElementById(btnId);
+        const status = document.getElementById(statusId);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (formId === 'waitlist-form') {
+                const isPrio = form.querySelector('input[name="isPriority"]').checked;
+                const isWait = document.getElementById('check-waitlist').checked;
+                if (!isPrio && !isWait) {
+                    status.textContent = 'ご希望の通知内容（優先案内 / キャンセル待ち）にチェックを入れてください。';
+                    status.style.color = 'red';
+                    return;
+                }
+            }
+
+            btn.disabled = true;
+            btn.textContent = '送信中...';
+            status.textContent = '';
+
+            const formData = new FormData(form);
+
+            if (formId === 'waitlist-form') {
+                const isPrio = form.querySelector('input[name="isPriority"]').checked;
+                const isWait = document.getElementById('check-waitlist').checked;
+                formData.set('isPriority', isPrio ? 'true' : 'false');
+                formData.set('isWaitlist', isWait ? 'true' : 'false');
+            }
+
+            fetch(GAS_API_URL, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    status.textContent = (formId === 'waitlist-form') ? '登録しました。確認メールをお送りしました。' : '取り消しました。';
+                    status.style.color = 'green';
+                    form.reset();
+                } else {
+                    status.textContent = 'エラーが発生しました: ' + (data.message || '不明なエラー');
+                    status.style.color = 'red';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                status.textContent = '通信エラーが発生しました。';
+                status.style.color = 'red';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = (formId === 'waitlist-form') ? '登録する' : '取り消す';
+            });
+        });
+    }
+
+    submitWaitlist('waitlist-form', 'waitlist-submit', 'waitlist-status');
+    submitWaitlist('cancel-waitlist-form', 'cancel-submit', 'cancel-status');
+
+    // PC版「参加者の声」開閉ロジック
+    const voiceListPc = document.getElementById('voice-list-pc');
+    const showMoreVoiceBtn = document.getElementById('show-more-voice');
+    if (showMoreVoiceBtn) {
+        showMoreVoiceBtn.onclick = () => {
+            const isExpanded = voiceListPc.classList.toggle('expanded');
+            showMoreVoiceBtn.textContent = isExpanded ? '閉じる' : 'もっと感想を見る';
+            if (!isExpanded) document.getElementById('voice').scrollIntoView({ behavior: 'smooth' });
+        };
+    }
+    function showCancelForm() { document.getElementById('cancel-waitlist-form').classList.remove('hidden'); document.getElementById('cancel-waitlist-form').scrollIntoView({behavior: "smooth", block: "center"}); }
+    function hideCancelForm() { document.getElementById('cancel-waitlist-form').classList.add('hidden'); }
+    </script>
+</body>
+</html>
