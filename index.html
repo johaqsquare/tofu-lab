@@ -949,7 +949,17 @@
                             <label for="honeypot">If you are a human, leave this field blank.</label>
                             <input type="text" id="honeypot" name="honeypot" tabindex="-1">
                         </div>
-                        <div class="text-center">
+                        
+                        <div class="flex justify-center items-center pt-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="contact-privacy-check" required class="w-4 h-4 text-brand-orange border-gray-300 rounded focus:ring-brand-orange cursor-pointer bg-white">
+                                <label for="contact-privacy-check" class="ml-2 text-sm text-gray-700 cursor-pointer">
+                                    <a href="./privacy.html" target="_blank" class="text-brand-orange underline hover:opacity-80">プライバシーポリシー</a>に同意する
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center pt-4">
                             <button type="submit" id="submit-button" class="bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 transition-opacity w-full md:w-auto">
                                 送信する
                             </button>
