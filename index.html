@@ -1540,6 +1540,9 @@
                 const isWait = document.getElementById('check-waitlist').checked;
                 formData.set('isPriority', isPrio ? 'true' : 'false');
                 formData.set('isWaitlist', isWait ? 'true' : 'false');
+                formData.set('formType', 'waitlist'); // 💡追加：優先案内フォームであることを明示
+            } else if (formId === 'cancel-waitlist-form') {
+                formData.set('formType', 'cancel_waitlist'); // 💡追加：キャンセルフォームであることを明示
             }
 
             fetch(GAS_API_URL, { method: 'POST', body: formData })
