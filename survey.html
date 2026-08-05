@@ -193,14 +193,20 @@
                     <!-- SNS利用同意 -->
                     <div class="pt-4">
                         <label class="block text-lg font-bold text-gray-800 mb-4">ご回答内容の掲載に関する同意 (必須)</label>
-                        <div class="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg border">
-                            <input type="checkbox" id="snsConsent" name="snsConsent" value="true" required class="mt-1 h-5 w-5 text-brand-orange border-gray-300 rounded focus:ring-brand-orange">
-                            <div class="flex-1">
-                                <label for="snsConsent" class="text-sm font-medium text-gray-800 cursor-pointer">同意します</label>
-                                <p class="text-xs text-gray-600 mt-1">
-                                    ご回答いただいた内容（満足度、選択式の回答、および自由記述欄）は、個人が特定されない形で、当サービスのSNSやWebサイトで「お客様の声」として紹介させていただく場合がございます。
-                                    （お名前や体験日時は公開されません。）
-                                </p>
+                        <div class="p-6 bg-gray-50 rounded-lg border">
+                            <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+                                ご回答いただいた内容（満足度、選択式の回答、および自由記述欄）は、個人が特定されない形で、当サービスのSNSやWebサイトで「お客様の声」として紹介させていただく場合がございます。（お名前や体験日時は公開されません。）
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <label class="flex-1 flex items-center p-4 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 transition shadow-sm">
+                                    <input type="radio" name="snsConsent" value="true" required class="h-5 w-5 text-brand-orange border-gray-300 focus:ring-brand-orange">
+                                    <span class="ml-3 font-bold text-gray-700">同意する（掲載OK）</span>
+                                </label>
+                                <label class="flex-1 flex items-center p-4 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition shadow-sm">
+                                    <!-- 💡 valueを空にすることでGAS側が「未同意」と自動判定します -->
+                                    <input type="radio" name="snsConsent" value="" required class="h-5 w-5 text-gray-400 border-gray-300 focus:ring-gray-400">
+                                    <span class="ml-3 font-bold text-gray-700">同意しない（掲載NG）</span>
+                                </label>
                             </div>
                         </div>
                     </div>
