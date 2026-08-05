@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>おとうふのじっけんしつ｜体験後アンケート</title>
+    <!-- ファビコンを追加 -->
+    <link rel="icon" href="./favicon.png?v=2">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-navy: #0A2A4E;
+            --brand-orange: #F5654B;
+        }
+        body { 
+            font-family: 'M PLUS Rounded 1c', sans-serif; 
+            background-color: #f0f4f8; 
+        }
+        .brand-text-navy { color: var(--brand-navy); }
+        .bg-brand-orange { background-color: var(--brand-orange); }
+        
+        /* カスタムラジオボタン */
+        .custom-radio-label {
+            display: inline-block;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+        input[type="radio"]:checked + .custom-radio-label {
+            background-color: var(--brand-orange);
+            color: white;
+            border-color: var(--brand-orange);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* カスタムスライダー */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        input[type="range"]:hover { opacity: 1; }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--brand-orange);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--brand-orange);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        .range-value {
+            text-align: center;
+            font-weight: bold;
+            color: var(--brand-navy);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex items-center space-x-3">
+            <img src="https://lh3.googleusercontent.com/d/1W7QX6mIgUO8B0tnsxvTpk0njUeyAto09" alt="ロゴ" class="w-10 h-10 rounded-full border-2 border-gray-200 shadow-sm">
+            <span class="site-title text-lg font-bold brand-text-navy">おとうふのじっけんしつ</span>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="py-12 md:py-20">
+        <div class="container mx-auto px-6 max-w-2xl">
+            
+            <div class="bg-white p-8 md:p-12 rounded-lg shadow-lg border">
+                <div class="text-center mb-10">
+                    <h1 class="text-2xl md:text-3xl font-extrabold brand-text-navy">体験後アンケート</h1>
+                    <p class="mt-4 text-sm text-gray-600">
+                        本日は「おとうふのじっけんしつ」にご参加いただき、誠にありがとうございました。
+                        今後のサービス向上のため、ぜひご感想をお聞かせください。
+                    </p>
+                </div>
+
+                <form id="survey-form" class="space-y-10">
+
+                    <!-- 0-1. お名前 -->
+                    <div>
+                        <label for="name" class="block text-lg font-bold text-gray-800 mb-4">お名前 (必須)</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="例：大豆 太郎">
+                    </div>
+                    
+                    <!-- 0-2. 体験日時 -->
+                    <div>
+                        <label for="experienceDate" class="block text-lg font-bold text-gray-800 mb-4">体験日時 (必須)</label>
+                        <input type="date" id="experienceDate" name="experienceDate" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300">
+                    </div>
+
+                    <!-- 1-1. 体験の満足度 -->
+                    <div>
+                        <label for="satisfaction" class="block text-lg font-bold text-gray-800 mb-4">1-1. 本日の体験の満足度を教えてください。(必須)</label>
+                        <div class="flex justify-between text-sm text-gray-500 mb-2 px-1">
+                            <span>不満 (1)</span>
+                            <span>ふつう (3)</span>
+                            <span>大満足 (5)</span>
+                        </div>
+                        <input type="range" id="satisfaction" name="satisfaction" min="1" max="5" step="1" value="3" class="w-full" required oninput="document.getElementById('satisfaction-value').innerText = this.value;">
+                        <div id="satisfaction-value" class="range-value">3</div>
+                    </div>
+
+                    <!-- 1-2. 満足度の理由 -->
+                    <div>
+                        <label for="reason" class="block text-lg font-bold text-gray-800 mb-4">1-2. そのように回答した理由を教えてください。(必須)</label>
+                        <textarea id="reason" name="reason" rows="3" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="例：説明が分かりやすかった。子供が楽しそうだった。"></textarea>
+                    </div>
+
+                    <!-- 2. 豆腐の見方 -->
+                    <div>
+                        <label class="block text-lg font-bold text-gray-800 mb-4">2. 体験を通じて、豆腐について理解が深まりましたか？ (必須)</label>
+                        <div class="flex flex-wrap gap-3">
+                            <input type="radio" name="perspective" value="深まった" id="p-yes" class="hidden" required>
+                            <label for="p-yes" class="custom-radio-label">深まった</label>
+                            
+                            <input type="radio" name="perspective" value="あまり変わらない" id="p-soso" class="hidden">
+                            <label for="p-soso" class="custom-radio-label">あまり変わらない</label>
+                            
+                            <input type="radio" name="perspective" value="深まらなかった" id="p-no" class="hidden">
+                            <label for="p-no" class="custom-radio-label">深まらなかった</label>
+                        </div>
+                    </div>
+
+                    <!-- 3. 豆腐をもっと好きになったか -->
+                    <div>
+                        <label class="block text-lg font-bold text-gray-800 mb-4">3. 体験を通じて、豆腐をもっと好きになりましたか？ (必須)</label>
+                        <div class="flex flex-wrap gap-3">
+                            <input type="radio" name="likeMore" value="なった" id="l-yes" class="hidden" required>
+                            <label for="l-yes" class="custom-radio-label">なった</label>
+                            
+                            <input type="radio" name="likeMore" value="変わらない" id="l-no" class="hidden">
+                            <label for="l-no" class="custom-radio-label">変わらない</label>
+                        </div>
+                    </div>
+
+                    <!-- 4. 友人への紹介 -->
+                    <div>
+                        <label class="block text-lg font-bold text-gray-800 mb-4">4. この体験を、ご友人・知人に紹介したいと思いますか？ (必須)</label>
+                        <div class="flex flex-wrap gap-3">
+                            <input type="radio" name="recommend" value="ぜひ紹介したい" id="r-yes" class="hidden" required>
+                            <label for="r-yes" class="custom-radio-label">ぜひ紹介したい</label>
+                            
+                            <input type="radio" name="recommend" value="機会があれば" id="r-soso" class="hidden">
+                            <label for="r-soso" class="custom-radio-label">機会があれば</label>
+                            
+                            <input type="radio" name="recommend" value="紹介しない" id="r-no" class="hidden">
+                            <label for="r-no" class="custom-radio-label">紹介しない</label>
+                        </div>
+                    </div>
+                    
+                    <!-- 5. 自由記述 (任意) -->
+                    <div>
+                        <label for="surveyMessage" class="block text-lg font-bold text-gray-800 mb-4">5. その他、ご感想やご意見があれば自由にお書きください。(任意)</label>
+                        <textarea id="surveyMessage" name="surveyMessage" rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="例：できたての豆腐が想像以上に美味しかった。子供が楽しそうに実験していて良かった。"></textarea>
+                    </div>
+
+                    <!-- 隠しフィールド -->
+                    <input type="hidden" name="formType" value="survey">
+                    
+                    <!-- Honeypot: Simple spam protection -->
+                    <div class="hidden">
+                        <label for="honeypot">If you are a human, leave this field blank.</label>
+                        <input type="text" id="honeypot" name="honeypot" tabindex="-1">
+                    </div>
+
+                    <!-- SNS利用同意 -->
+                    <div class="pt-4">
+                        <label class="block text-lg font-bold text-gray-800 mb-4">ご回答内容の掲載に関する同意 (必須)</label>
+                        <div class="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg border">
+                            <input type="checkbox" id="snsConsent" name="snsConsent" value="true" required class="mt-1 h-5 w-5 text-brand-orange border-gray-300 rounded focus:ring-brand-orange">
+                            <div class="flex-1">
+                                <label for="snsConsent" class="text-sm font-medium text-gray-800 cursor-pointer">同意します</label>
+                                <p class="text-xs text-gray-600 mt-1">
+                                    ご回答いただいた内容（満足度、選択式の回答、および自由記述欄）は、個人が特定されない形で、当サービスのSNSやWebサイトで「お客様の声」として紹介させていただく場合がございます。
+                                    （お名前や体験日時は公開されません。）
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 送信ボタン -->
+                    <div class="text-center pt-4">
+                        <button type="submit" id="submit-button" class="bg-brand-orange text-white font-bold px-10 py-4 rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 w-full md:w-auto text-lg">
+                            アンケートを送信する
+                        </button>
+                        <p id="form-status" class="mt-6 text-sm"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="py-12 mt-12" style="background-color: var(--brand-navy);">
+        <div class="container mx-auto px-6 text-center text-gray-300">
+            <p class="text-sm">© 2025-2026 おとうふのじっけんしつ. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const surveyForm = document.getElementById('survey-form');
+            const submitButton = document.getElementById('submit-button');
+            const formStatus = document.getElementById('form-status');
+
+            // 💡 現在使用している最新のGAS Web App URLが設定されているか確認してください
+            const gasWebAppUrl = 'https://script.google.com/macros/s/AKfycbwOxy7JKIyBIIEWDzqkplAQx4cnYckQFeh2WbNoEcs7C-tUQLH_fau8UabOH4A8ZTXXYQ/exec';
+
+            surveyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if (!gasWebAppUrl || gasWebAppUrl.includes('AKfycb...')) {
+                    formStatus.textContent = 'フォームが正しく設定されていません。管理者に連絡してください。';
+                    formStatus.style.color = 'red';
+                    return;
+                }
+
+                const formData = new FormData(surveyForm);
+                
+                if (formData.get('honeypot')) {
+                    console.log("Bot submission detected.");
+                    return; 
+                }
+
+                submitButton.disabled = true;
+                submitButton.textContent = '送信中...';
+                formStatus.textContent = '';
+
+                fetch(gasWebAppUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        formStatus.textContent = 'ご回答ありがとうございました！メッセージは正常に送信されました。';
+                        formStatus.style.color = 'green';
+                        surveyForm.reset();
+                        
+                        // フォーム全体を非表示にして、完了メッセージだけを表示する
+                        surveyForm.innerHTML = `<div class="text-center py-12">
+                            <h2 class="text-2xl font-bold brand-text-navy mb-4">ご協力ありがとうございました！</h2>
+                            <p class="text-gray-600">貴重なご意見をいただき、誠にありがとうございます。</p>
+                        </div>`;
+                    } else {
+                        throw new Error(data.message || '送信に失敗しました。');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    formStatus.textContent = 'エラーが発生しました。時間をおいて再度お試しください。';
+                    formStatus.style.color = 'red';
+                })
+                .finally(() => {
+                    // 完了メッセージに置き換わるため、ボタンの状態を戻す必要はありません
+                });
+            });
+
+            // スライダーの値表示を更新する
+            const satisfactionSlider = document.getElementById('satisfaction');
+            if (satisfactionSlider) {
+                const satisfactionValue = document.getElementById('satisfaction-value');
+                satisfactionSlider.addEventListener('input', (e) => {
+                    satisfactionValue.innerText = e.target.value;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
