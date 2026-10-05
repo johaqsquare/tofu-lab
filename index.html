@@ -1255,7 +1255,6 @@
         const revealObserver = new IntersectionObserver(entries => {
             entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
         }, { threshold: 0.1 });
-        reveves = document.querySelectorAll('.reveal, .pop-reveal');
         reveals.forEach(r => revealObserver.observe(r));
 
         const bg1 = document.getElementById('about-bg-1');
