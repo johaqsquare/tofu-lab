@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <title>予約のご応募 | おとうふのじっけんしつ</title>
+    <link rel="icon" href="https://johaqsquare.github.io/tofu-lab/favicon.png" type="image/png" sizes="48x48">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand-navy:#0A2A4E; --brand-orange:#F5654B; }
+        body { font-family: 'M PLUS Rounded 1c', sans-serif; background-color:#f0f4f8; }
+        .navy { color: var(--brand-navy); }
+        .orange { color: var(--brand-orange); }
+        .btn-orange { background-color: var(--brand-orange); color:#fff; }
+        .btn-orange:hover { opacity:.9; }
+        .btn-orange:disabled { opacity:.5; cursor:not-allowed; }
+        .field { width:100%; padding:.6rem .75rem; border:1px solid #d1d5db; border-radius:.5rem; background:#fff; font-size:.9rem; }
+        .field:focus { outline:2px solid var(--brand-orange); outline-offset:0; border-color:var(--brand-orange); }
+        .hidden { display:none; }
+        .card { background:#fff; border-radius:1rem; box-shadow:0 1px 4px rgba(0,0,0,.08); border:1px solid #e5e7eb; }
+        .label { display:block; font-size:.75rem; font-weight:700; color:#374151; margin-bottom:.25rem; }
+        .hint { font-size:.7rem; color:#6b7280; margin-top:.25rem; }
+    </style>
+</head>
+<body class="antialiased">
+<main class="max-w-xl mx-auto px-4 py-10">
+
+    <div class="text-center mb-8">
+        <a href="./" class="inline-block text-sm text-gray-500 underline mb-4">← 公式サイトへ戻る</a>
+        <h1 class="text-2xl font-extrabold navy">おとうふのじっけんしつ</h1>
+        <p class="text-sm text-gray-600 mt-1">予約のご応募（抽選）</p>
+    </div>
+
+    <!-- 読み込み中 -->
+    <section id="loading" class="card p-8 text-center text-sm text-gray-500">確認しています...</section>
+
+    <!-- 受付できない場合 -->
+    <section id="closed" class="hidden card p-8 text-center">
+        <h2 class="font-bold navy mb-2" id="closed-title">このURLからは応募できません</h2>
+        <p class="text-sm text-gray-600 leading-relaxed" id="closed-body"></p>
+        <a href="./" class="inline-block mt-6 btn-orange font-bold px-8 py-3 rounded-full text-sm">公式サイトへ戻る</a>
+    </section>
+
+    <!-- 応募フォーム -->
+    <section id="form-wrap" class="hidden card p-6 md:p-8">
+        <p id="round-label" class="text-xs font-bold orange mb-1"></p>
+        <h2 class="font-bold navy mb-3">ご希望の内容をご入力ください</h2>
+
+        <div class="bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
+            <p class="font-bold navy mb-1">今回は抽選です（先着順ではありません）</p>
+            <p>受付期間：<span id="period" class="font-bold"></span></p>
+            <p class="mt-1">応募の時点では、料金はかかりません。当選された方のみ、あらためてご連絡します。</p>
+        </div>
+
+        <form id="reserve-form" class="space-y-6" novalidate>
+            <div class="hidden"><input type="text" name="honeypot" tabindex="-1" autocomplete="off"></div>
+
+            <!-- 枠 -->
+            <fieldset>
+                <legend class="label">参加できる枠（必須・複数選択できます）</legend>
+                <div id="slots" class="space-y-2 bg-gray-50 border rounded-lg p-3"></div>
+                <p class="hint">ご都合のつく枠をすべてお選びください。</p>
+            </fieldset>
+
+            <!-- 人数 -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="label" for="adults">大人（中学生以上）</label>
+                    <select name="adults" id="adults" class="field">
+                        <option value="1">1名</option><option value="2">2名</option><option value="3">3名</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label" for="children">お子様（小学生以下）</label>
+                    <select name="children" id="children" class="field">
+                        <option value="0">0名</option><option value="1" selected>1名</option><option value="2">2名</option>
+                    </select>
+                </div>
+            </div>
+            <p class="hint -mt-4">※1組最大3名までです。調理にご参加いただけるのは4歳以上のお子様です。</p>
+
+            <!-- お子様ごと -->
+            <div id="child-details" class="space-y-3"></div>
+
+            <!-- 料金 -->
+            <div class="bg-white border-2 border-orange-200 rounded-lg p-4">
+                <p class="text-xs font-bold navy mb-2">料金（体験当日のお支払い・クレジットカードのみ）</p>
+                <div id="price-lines" class="text-sm text-gray-700 space-y-1"></div>
+                <div class="border-t border-dashed mt-3 pt-3 flex justify-between items-baseline">
+                    <span class="text-sm font-bold navy">合計</span>
+                    <span id="price-total" class="text-xl font-extrabold orange"></span>
+                </div>
+                <p id="price-note" class="hint"></p>
+            </div>
+
+            <!-- お客様情報 -->
+            <div>
+                <label class="label" for="name">お名前（必須）</label>
+                <input type="text" name="name" id="name" class="field" required maxlength="60">
+            </div>
+            <div>
+                <label class="label" for="instagram">Instagramのアカウント名（必須）</label>
+                <div class="flex items-center">
+                    <span class="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm text-gray-600">@</span>
+                    <input type="text" name="instagram" id="instagram" class="field !rounded-l-none" required maxlength="31" placeholder="例：lab_tofu" autocapitalize="none" autocomplete="off">
+                </div>
+                <p class="hint">抽選結果のご連絡に使います。</p>
+            </div>
+            <div>
+                <label class="label" for="email">メールアドレス（必須）</label>
+                <input type="email" name="email" id="email" class="field" required maxlength="120">
+                <p class="hint">Squareからの予約確定メールが届きます。受信設定をご確認ください。</p>
+            </div>
+            <div>
+                <label class="label" for="heard">この体験をどこで知りましたか（必須）</label>
+                <select name="heard" id="heard" class="field" required>
+                    <option value="">選択してください</option>
+                    <option>Instagramの投稿・リール</option>
+                    <option>Instagramのストーリーズ</option>
+                    <option>Instagramの優先案内チャンネル</option>
+                    <option>友人・知人の紹介</option>
+                    <option>ホームページ・検索</option>
+                    <option>イベント・チラシ</option>
+                    <option>その他</option>
+                </select>
+            </div>
+
+            <fieldset>
+                <legend class="label">体験の様子のSNS掲載について（必須）</legend>
+                <div class="space-y-2 bg-gray-50 border rounded-lg p-3 text-sm text-gray-700">
+                    <label class="flex items-start cursor-pointer"><input type="radio" name="sns" value="ok_face" class="mt-1 mr-2">顔が写っていても掲載OK</label>
+                    <label class="flex items-start cursor-pointer"><input type="radio" name="sns" value="ok_noface" class="mt-1 mr-2">顔が写らなければ掲載OK</label>
+                    <label class="flex items-start cursor-pointer"><input type="radio" name="sns" value="ng" class="mt-1 mr-2">掲載しない</label>
+                </div>
+            </fieldset>
+
+            <div>
+                <label class="label" for="note">備考（任意）</label>
+                <textarea name="note" id="note" rows="3" maxlength="500" class="field" placeholder="アレルギーなど、お伝えしたいことがあればご記入ください。"></textarea>
+            </div>
+
+            <div class="space-y-2 bg-gray-50 border rounded-lg p-3">
+                <label class="flex items-start text-xs text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="agree-notes" class="mt-0.5 mr-2">
+                    <span><a href="./#notes" target="_blank" class="underline orange">注意事項</a>とキャンセル規定（3日前まで／2日前から料金の50%／当日100%）に同意します</span>
+                </label>
+                <label class="flex items-start text-xs text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="agree-privacy" class="mt-0.5 mr-2">
+                    <span><a href="./privacy.html" target="_blank" class="underline orange">プライバシーポリシー</a>に同意します</span>
+                </label>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" id="submit-btn" class="btn-orange font-bold w-full py-3 rounded-full text-sm shadow">この内容で応募する</button>
+                <p id="form-status" class="text-xs mt-3 text-red-600"></p>
+            </div>
+        </form>
+    </section>
+
+    <!-- 完了 -->
+    <section id="done" class="hidden card p-8 text-center">
+        <h2 class="text-xl font-extrabold navy mb-3">ご応募を受け付けました</h2>
+        <p class="text-sm text-gray-600 leading-relaxed">
+            受付メールをお送りしました。<br>
+            抽選結果は、受付終了後にご連絡します。<br>
+            当選された方には、Squareから予約確定のメールが届きます。
+        </p>
+        <a href="./" class="inline-block mt-6 btn-orange font-bold px-8 py-3 rounded-full text-sm">公式サイトへ戻る</a>
+    </section>
+
+</main>
+
+<script>
+// 既存の index.html と同じGASウェブアプリURL
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby_zT3VlrwuzNe3Ii661mu08XvM1r9XzOAJBlO4HhQ2-BpkMQJl6J_cd5-tEtI7c5Zhng/exec';
+
+const $ = id => document.getElementById(id);
+const sections = ['loading', 'closed', 'form-wrap', 'done'];
+function show(id) { sections.forEach(s => $(s).classList.toggle('hidden', s !== id)); }
+
+const key = new URLSearchParams(location.search).get('k') || '';
+let prices = null;
+
+const ERRORS = {
+    closed: 'このURLは受付期間外か、無効です。',
+    missing: '必須項目が入力されていません。',
+    invalid_handle: 'Instagramのアカウント名の形式が正しくありません（英数字・ピリオド・アンダースコアのみ）。',
+    invalid_email: 'メールアドレスの形式が正しくありません。',
+    invalid_people: '人数は、大人1名以上・合計3名までで選択してください。',
+    invalid_child: 'お子様の性別と身長（cm）を入力してください。',
+    slot_closed: '選択した枠が受付を終了しました。ページを再読み込みして、もう一度ご選択ください。',
+    duplicate: 'このInstagramアカウントでは、今回すでにご応募済みです。'
+};
+
+function fmtDt(iso) {
+    return new Intl.DateTimeFormat('ja-JP', { timeZone: 'Asia/Tokyo', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+}
+const yen = n => n.toLocaleString('ja-JP') + '円';
+
+// ---------- 料金 ----------
+function calcPrice(a, c) {
+    const pairs = Math.min(a, c), general = a - pairs, extra = c - pairs;
+    const unknown = extra > 0 && prices.extraChild == null;
+    let total = pairs * prices.parentChild + general * prices.general;
+    if (extra > 0 && !unknown) total += extra * prices.extraChild;
+    return { pairs, general, extra, total, unknown };
+}
+function renderPrice() {
+    const a = Number($('adults').value), c = Number($('children').value);
+    const r = calcPrice(a, c);
+    const lines = [];
+    if (r.pairs) lines.push(`親子プラン（大人1＋お子様1） ${yen(prices.parentChild)} × ${r.pairs}`);
+    if (r.general) lines.push(`一般プラン（大人1） ${yen(prices.general)} × ${r.general}`);
+    if (r.extra) lines.push(prices.extraChild == null
+        ? `追加のお子様 × ${r.extra}（別途）`
+        : `追加のお子様 ${yen(prices.extraChild)} × ${r.extra}`);
+    $('price-lines').innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+    $('price-total').textContent = yen(r.total) + '〜';
+    $('price-note').textContent = r.unknown
+        ? '※追加のお子様分の料金は、当選のご連絡の際にお知らせします。'
+        : '※料金は目安です。当選のご連絡の際にあらためてお知らせします。';
+    if (a + c > 3) $('form-status').textContent = ERRORS.invalid_people; else $('form-status').textContent = '';
+}
+
+// ---------- お子様ごとの入力欄 ----------
+function renderChildren() {
+    const c = Number($('children').value);
+    const box = $('child-details');
+    const keep = {};
+    box.querySelectorAll('input,select').forEach(el => { keep[el.name] = el.value; });
+    box.innerHTML = '';
+    for (let i = 1; i <= c; i++) {
+        const div = document.createElement('div');
+        div.className = 'bg-gray-50 border rounded-lg p-3';
+        div.innerHTML = `
+            <p class="text-xs font-bold navy mb-2">お子様 ${i}人目</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="label" for="childGender${i}">性別</label>
+                    <select name="childGender${i}" id="childGender${i}" class="field">
+                        <option>男の子</option><option>女の子</option><option>回答しない</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label" for="childHeight${i}">身長（cm）</label>
+                    <input type="number" name="childHeight${i}" id="childHeight${i}" class="field" min="50" max="180" inputmode="numeric" placeholder="例：110">
+                </div>
+            </div>
+            ${i === 1 ? '<p class="hint">白衣のサイズ選びに使います。</p>' : ''}`;
+        box.appendChild(div);
+        ['childGender' + i, 'childHeight' + i].forEach(n => { if (keep[n] !== undefined) div.querySelector(`[name="${n}"]`).value = keep[n]; });
+    }
+}
+
+// ---------- 起動 ----------
+function fillSlots(slots) {
+    const box = $('slots');
+    box.innerHTML = '';
+    if (!slots.length) {
+        box.innerHTML = '<p class="text-sm text-gray-500">現在、応募できる枠がありません。</p>';
+        $('submit-btn').disabled = true;
+        return;
+    }
+    slots.forEach((s, i) => {
+        const label = document.createElement('label');
+        label.className = 'flex items-center text-sm text-gray-700 cursor-pointer';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox'; cb.className = 'mr-2'; cb.value = s.value; cb.dataset.slot = '1'; cb.id = 'slot' + i;
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(s.label));
+        box.appendChild(label);
+    });
+}
+
+async function init() {
+    if (!key) { showClosed('invalid'); return; }
+    try {
+        const res = await fetch(`${GAS_API_URL}?action=reserve_init&k=${encodeURIComponent(key)}`);
+        const data = await res.json();
+        if (!data.ok) { showClosed(data.status, data); return; }
+
+        prices = data.prices;
+        $('round-label').textContent = data.label || '';
+        $('period').textContent = data.endIso
+            ? (data.startIso ? fmtDt(data.startIso) + ' 〜 ' : '〜 ') + fmtDt(data.endIso)
+            : '（締切は別途ご案内）';
+        fillSlots(data.slots || []);
+        renderChildren();
+        renderPrice();
+        show('form-wrap');
+    } catch (err) {
+        console.error(err);
+        showClosed('error');
+    }
+}
+
+function showClosed(status, data) {
+    const t = $('closed-title'), b = $('closed-body');
+    if (status === 'before') {
+        t.textContent = 'まだ受付開始前です';
+        b.textContent = data && data.startIso ? `受付開始は ${fmtDt(data.startIso)} です。` : '受付開始までお待ちください。';
+    } else if (status === 'after') {
+        t.textContent = '受付は終了しました';
+        b.textContent = 'ご応募ありがとうございました。次回の案内をお待ちください。';
+    } else if (status === 'error') {
+        t.textContent = '通信エラーが発生しました';
+        b.textContent = '時間をおいて、もう一度お試しください。';
+    } else {
+        t.textContent = 'このURLからは応募できません';
+        b.textContent = 'URLが正しいか、ご確認ください。';
+    }
+    show('closed');
+}
+
+$('adults').addEventListener('change', renderPrice);
+$('children').addEventListener('change', () => { renderChildren(); renderPrice(); });
+
+// ---------- 送信 ----------
+$('reserve-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const status = $('form-status');
+    status.textContent = '';
+    const f = $('reserve-form');
+
+    const a = Number($('adults').value), c = Number($('children').value);
+    if (a + c > 3) { status.textContent = ERRORS.invalid_people; return; }
+
+    const chosen = [...document.querySelectorAll('input[data-slot]:checked')].map(el => el.value);
+    if (!chosen.length) { status.textContent = '参加できる枠を1つ以上選んでください。'; return; }
+
+    for (let i = 1; i <= c; i++) {
+        const h = Number($('childHeight' + i).value);
+        if (!(h >= 50 && h <= 180)) { status.textContent = `お子様${i}人目の身長（cm）を入力してください。`; return; }
+    }
+    if (!$('name').value.trim() || !$('instagram').value.trim() || !$('email').value.trim() || !$('heard').value) {
+        status.textContent = ERRORS.missing; return;
+    }
+    if (!f.querySelector('input[name="sns"]:checked')) { status.textContent = 'SNS掲載についてお選びください。'; return; }
+    if (!$('agree-notes').checked || !$('agree-privacy').checked) { status.textContent = '注意事項・プライバシーポリシーへの同意が必要です。'; return; }
+
+    const btn = $('submit-btn');
+    btn.disabled = true; btn.textContent = '送信中...';
+
+    const fd = new FormData(f);
+    fd.set('formType', 'reserve');
+    fd.set('k', key);
+    fd.set('choices', chosen.join('|'));
+
+    try {
+        const res = await fetch(GAS_API_URL, { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.result === 'success') {
+            show('done');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            status.textContent = ERRORS[data.message] || 'エラーが発生しました。時間をおいて再度お試しください。';
+        }
+    } catch (err) {
+        console.error(err);
+        status.textContent = '通信エラーが発生しました。時間をおいて再度お試しください。';
+    } finally {
+        btn.disabled = false; btn.textContent = 'この内容で応募する';
+    }
+});
+
+init();
+</script>
+</body>
+</html>
