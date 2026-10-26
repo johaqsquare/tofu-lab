@@ -64,7 +64,7 @@
             <fieldset>
                 <legend class="label">参加できる枠（必須・複数選択できます）</legend>
                 <div id="slots" class="space-y-2 bg-gray-50 border rounded-lg p-3"></div>
-                <p class="hint">ご都合のつく枠をすべてお選びください。</p>
+                <p class="hint">各枠1組限定のため、応募が重なった場合は抽選になります。ご都合のつく枠をすべてお選びください。</p>
             </fieldset>
 
             <!-- 人数 -->
@@ -184,7 +184,7 @@ const sections = ['loading', 'closed', 'form-wrap', 'done'];
 function show(id) { sections.forEach(s => $(s).classList.toggle('hidden', s !== id)); }
 
 const key = new URLSearchParams(location.search).get('k') || '';
-let prices = null;
+let priceTable = null;
 
 const ERRORS = {
     closed: 'このURLは受付期間外か、無効です。',
@@ -202,29 +202,26 @@ function fmtDt(iso) {
 }
 const yen = n => n.toLocaleString('ja-JP') + '円';
 
-// ---------- 料金 ----------
-function calcPrice(a, c) {
-    const pairs = Math.min(a, c), general = a - pairs, extra = c - pairs;
-    const unknown = extra > 0 && prices.extraChild == null;
-    let total = pairs * prices.parentChild + general * prices.general;
-    if (extra > 0 && !unknown) total += extra * prices.extraChild;
-    return { pairs, general, extra, total, unknown };
-}
+// ---------- 料金（1組あたり。料金表はGAS側が正） ----------
 function renderPrice() {
     const a = Number($('adults').value), c = Number($('children').value);
-    const r = calcPrice(a, c);
-    const lines = [];
-    if (r.pairs) lines.push(`親子プラン（大人1＋お子様1） ${yen(prices.parentChild)} × ${r.pairs}`);
-    if (r.general) lines.push(`一般プラン（大人1） ${yen(prices.general)} × ${r.general}`);
-    if (r.extra) lines.push(prices.extraChild == null
-        ? `追加のお子様 × ${r.extra}（別途）`
-        : `追加のお子様 ${yen(prices.extraChild)} × ${r.extra}`);
-    $('price-lines').innerHTML = lines.map(l => `<div>${l}</div>`).join('');
-    $('price-total').textContent = yen(r.total) + '〜';
-    $('price-note').textContent = r.unknown
-        ? '※追加のお子様分の料金は、当選のご連絡の際にお知らせします。'
-        : '※料金は目安です。当選のご連絡の際にあらためてお知らせします。';
-    if (a + c > 3) $('form-status').textContent = ERRORS.invalid_people; else $('form-status').textContent = '';
+    const total = priceTable[a + '-' + c];
+    const plan = c > 0 ? '親子プラン' : '一般プラン';
+    const who = c > 0 ? `大人${a}名＋お子様${c}名` : `大人${a}名`;
+    $('price-lines').innerHTML = total === undefined ? '' : `<div>${plan}（${who}）</div>`;
+    $('price-total').textContent = total === undefined ? '―' : yen(total);
+    $('price-note').textContent = '※1組あたりの料金です。応募の時点では料金はかかりません。';
+}
+
+// 料金表にある組み合わせだけ選べるよう、大人の人数に応じてお子様の人数の選択肢を絞る
+function syncChildrenOptions() {
+    const a = Number($('adults').value);
+    const max = a === 1 ? 2 : a === 2 ? 1 : 0;
+    const sel = $('children');
+    const prev = Math.min(Number(sel.value) || 0, max);
+    sel.innerHTML = '';
+    for (let i = 0; i <= max; i++) sel.add(new Option(i + '名', i));
+    sel.value = String(prev);
 }
 
 // ---------- お子様ごとの入力欄 ----------
@@ -284,12 +281,13 @@ async function init() {
         const data = await res.json();
         if (!data.ok) { showClosed(data.status, data); return; }
 
-        prices = data.prices;
+        priceTable = data.priceTable;
         $('round-label').textContent = data.label || '';
         $('period').textContent = data.endIso
             ? (data.startIso ? fmtDt(data.startIso) + ' 〜 ' : '〜 ') + fmtDt(data.endIso)
             : '（締切は別途ご案内）';
         fillSlots(data.slots || []);
+        syncChildrenOptions();
         renderChildren();
         renderPrice();
         show('form-wrap');
@@ -317,7 +315,7 @@ function showClosed(status, data) {
     show('closed');
 }
 
-$('adults').addEventListener('change', renderPrice);
+$('adults').addEventListener('change', () => { syncChildrenOptions(); renderChildren(); renderPrice(); });
 $('children').addEventListener('change', () => { renderChildren(); renderPrice(); });
 
 // ---------- 送信 ----------
@@ -328,7 +326,7 @@ $('reserve-form').addEventListener('submit', async e => {
     const f = $('reserve-form');
 
     const a = Number($('adults').value), c = Number($('children').value);
-    if (a + c > 3) { status.textContent = ERRORS.invalid_people; return; }
+    if (priceTable[a + '-' + c] === undefined) { status.textContent = ERRORS.invalid_people; return; }
 
     const chosen = [...document.querySelectorAll('input[data-slot]:checked')].map(el => el.value);
     if (!chosen.length) { status.textContent = '参加できる枠を1つ以上選んでください。'; return; }
