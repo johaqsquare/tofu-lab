@@ -33,7 +33,7 @@
     <div class="text-center mb-8">
         <a href="./" class="inline-block text-sm text-gray-500 underline mb-4">← 公式サイトへ戻る</a>
         <h1 class="text-2xl font-extrabold navy">おとうふのじっけんしつ</h1>
-        <p class="text-sm text-gray-600 mt-1">予約のご応募（抽選）</p>
+        <p id="page-sub" class="text-sm text-gray-600 mt-1">ご予約</p>
     </div>
 
     <!-- 読み込み中 -->
@@ -51,10 +51,15 @@
         <p id="round-label" class="text-xs font-bold orange mb-1"></p>
         <h2 class="font-bold navy mb-3">ご希望の内容をご入力ください</h2>
 
-        <div class="bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
+        <div id="notice-lottery" class="hidden bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
             <p class="font-bold navy mb-1">今回は抽選です（先着順ではありません）</p>
-            <p>受付期間：<span id="period" class="font-bold"></span></p>
-            <p class="mt-1">応募の時点では料金はかかりません。<br>当落結果は後日に参加者全員へご連絡します。</p>
+            <p>受付期間：<span class="period font-bold"></span></p>
+            <p class="mt-1">応募の時点では、料金はかかりません。当選された方のみ、あらためてご連絡します。</p>
+        </div>
+        <div id="notice-general" class="hidden bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
+            <p class="font-bold navy mb-1">先着順のご予約です</p>
+            <p>受付期間：<span class="period font-bold"></span></p>
+            <p class="mt-1">各枠1組限定です。「受付中」の枠は、そのままご予約できます。「満席」の枠は、キャンセル待ちとして登録できます（空きが出た場合のみ、順番にご連絡します）。</p>
         </div>
 
         <form id="reserve-form" class="space-y-6" novalidate>
@@ -62,9 +67,9 @@
 
             <!-- 枠 -->
             <fieldset>
-                <legend class="label">参加できる枠（必須・複数選択できます）</legend>
+                <legend id="slots-legend" class="label">参加できる枠（必須・複数選択できます）</legend>
                 <div id="slots" class="space-y-2 bg-gray-50 border rounded-lg p-3"></div>
-                <p class="hint">各枠1組限定のため、応募が重なった場合は抽選になります。<br>ご都合のつく枠をすべてお選びください。</p>
+                <p id="slots-hint" class="hint">各枠1組限定のため、応募が重なった場合は抽選になります。ご都合のつく枠をすべてお選びください。</p>
             </fieldset>
 
             <!-- 人数 -->
@@ -109,7 +114,7 @@
                     <span class="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm text-gray-600">@</span>
                     <input type="text" name="instagram" id="instagram" class="field !rounded-l-none" required maxlength="31" placeholder="例：lab_tofu" autocapitalize="none" autocomplete="off">
                 </div>
-                <p class="hint">抽選結果のご連絡に使います。</p>
+                <p class="hint">ご連絡（抽選結果・キャンセル待ちの空きなど）に使います。</p>
             </div>
             <div>
                 <label class="label" for="email">メールアドレス（必須）</label>
@@ -120,11 +125,12 @@
                 <label class="label" for="heard">この体験をどこで知りましたか（必須）</label>
                 <select name="heard" id="heard" class="field" required>
                     <option value="">選択してください</option>
-                    <option>Instagram</option>
-                    <option>Threads</option>
-                    <option>いこーよ</option>
+                    <option>Instagramの投稿・リール</option>
+                    <option>Instagramのストーリーズ</option>
+                    <option>Instagramの優先案内チャンネル</option>
                     <option>友人・知人の紹介</option>
-                    <option>ホームページ（検索）</option>
+                    <option>ホームページ・検索</option>
+                    <option>イベント・チラシ</option>
                     <option>その他</option>
                 </select>
             </div>
@@ -146,7 +152,7 @@
             <div class="space-y-2 bg-gray-50 border rounded-lg p-3">
                 <label class="flex items-start text-xs text-gray-700 cursor-pointer">
                     <input type="checkbox" id="agree-notes" class="mt-0.5 mr-2">
-                    <span><a href="./#notes" target="_blank" class="underline orange">注意事項</a>と<a href="./privacy.html#cancel" target="_blank" class="underline orange">キャンセル規定</a>（3日前まで／2日前から料金の50%／当日100%）に同意します</span>
+                    <span><a href="./#notes" target="_blank" class="underline orange">注意事項</a>とキャンセル規定（3日前まで／2日前から料金の50%／当日100%）に同意します</span>
                 </label>
                 <label class="flex items-start text-xs text-gray-700 cursor-pointer">
                     <input type="checkbox" id="agree-privacy" class="mt-0.5 mr-2">
@@ -155,6 +161,7 @@
             </div>
 
             <div class="text-center">
+                <input type="hidden" name="waitlist" id="waitlist-flag" value="">
                 <button type="submit" id="submit-btn" class="btn-orange font-bold w-full py-3 rounded-full text-sm shadow">この内容で応募する</button>
                 <p id="form-status" class="text-xs mt-3 text-red-600"></p>
             </div>
@@ -163,12 +170,8 @@
 
     <!-- 完了 -->
     <section id="done" class="hidden card p-8 text-center">
-        <h2 class="text-xl font-extrabold navy mb-3">ご応募を受け付けました</h2>
-        <p class="text-sm text-gray-600 leading-relaxed">
-            受付メールをお送りしました。<br>
-            抽選結果は、受付終了後にご連絡します。<br>
-            当選された方には、Squareから予約確定のメールが届きます。
-        </p>
+        <h2 id="done-title" class="text-xl font-extrabold navy mb-3">ご応募を受け付けました</h2>
+        <p id="done-body" class="text-sm text-gray-600 leading-relaxed"></p>
         <a href="./" class="inline-block mt-6 btn-orange font-bold px-8 py-3 rounded-full text-sm">公式サイトへ戻る</a>
     </section>
 
@@ -184,8 +187,19 @@ function show(id) { sections.forEach(s => $(s).classList.toggle('hidden', s !== 
 
 const key = new URLSearchParams(location.search).get('k') || '';
 let priceTable = null;
+let mode = 'lottery';          // 'lottery'（優先・抽選）／'general'（一般・先着）
+let slotState = {};            // 一般モードで、枠の値 → 空きがあるか
+
+const DONE_TEXT = {
+    applied:  ['ご応募を受け付けました', '受付メールをお送りしました。<br>抽選結果は、受付終了後にご連絡します。<br>当選された方には、Squareから予約確定のメールが届きます。'],
+    reserved: ['ご予約を受け付けました', '受付メールをお送りしました。<br>この枠をお取りしています。<br>Squareへの登録が完了しましたら、Squareから予約確定のメールが届きます。'],
+    waitlist: ['キャンセル待ちを受け付けました', '受付メールをお送りしました。<br>現時点では、予約は確定していません。<br>キャンセルが出た場合のみ、待ち順にご連絡します。']
+};
 
 const ERRORS = {
+    choose_one: '枠は1つだけ選んでください。',
+    slot_full: '選択した枠は、たったいま満席になりました。ページを再読み込みして、キャンセル待ちとして登録してください。',
+    slot_open: '選択した枠に空きが出ました。ページを再読み込みして、ご予約ください。',
     closed: 'このURLは受付期間外か、無効です。',
     missing: '必須項目が入力されていません。',
     invalid_handle: 'Instagramのアカウント名の形式が正しくありません（英数字・ピリオド・アンダースコアのみ）。',
@@ -193,7 +207,7 @@ const ERRORS = {
     invalid_people: '人数は、大人1名以上・合計3名までで選択してください。',
     invalid_child: 'お子様の性別と身長（cm）を入力してください。',
     slot_closed: '選択した枠が受付を終了しました。ページを再読み込みして、もう一度ご選択ください。',
-    duplicate: 'このInstagramアカウントでは、今回すでにご応募済みです。'
+    duplicate: 'このInstagramアカウントでは、今回すでにお申込み済みです。'
 };
 
 function fmtDt(iso) {
@@ -209,7 +223,9 @@ function renderPrice() {
     const who = c > 0 ? `大人${a}名＋お子様${c}名` : `大人${a}名`;
     $('price-lines').innerHTML = total === undefined ? '' : `<div>${plan}（${who}）</div>`;
     $('price-total').textContent = total === undefined ? '―' : yen(total);
-    $('price-note').textContent = '※1組あたりの料金です。応募の時点では料金はかかりません。';
+    $('price-note').textContent = mode === 'general'
+        ? '※1組あたりの料金です。お支払いは体験当日です。'
+        : '※1組あたりの料金です。応募の時点では料金はかかりません。';
 }
 
 // 料金表にある組み合わせだけ選べるよう、大人の人数に応じてお子様の人数の選択肢を絞る
@@ -258,19 +274,50 @@ function fillSlots(slots) {
     const box = $('slots');
     box.innerHTML = '';
     if (!slots.length) {
-        box.innerHTML = '<p class="text-sm text-gray-500">現在、応募できる枠がありません。</p>';
+        box.innerHTML = '<p class="text-sm text-gray-500">現在、' + (mode === 'general' ? 'ご予約できる' : '応募できる') + '枠がありません。</p>';
         $('submit-btn').disabled = true;
         return;
     }
     slots.forEach((s, i) => {
         const label = document.createElement('label');
         label.className = 'flex items-center text-sm text-gray-700 cursor-pointer';
-        const cb = document.createElement('input');
-        cb.type = 'checkbox'; cb.className = 'mr-2'; cb.value = s.value; cb.dataset.slot = '1'; cb.id = 'slot' + i;
-        label.appendChild(cb);
+        const input = document.createElement('input');
+        input.className = 'mr-2'; input.value = s.value; input.dataset.slot = '1'; input.id = 'slot' + i;
+        input.type = mode === 'general' ? 'radio' : 'checkbox';
+        if (mode === 'general') input.name = 'slotChoice';
+        label.appendChild(input);
         label.appendChild(document.createTextNode(s.label));
+        if (mode === 'general') {
+            slotState[s.value] = s.open;
+            const badge = document.createElement('span');
+            badge.className = s.open ? 'ml-2 text-xs font-bold orange' : 'ml-2 text-xs font-bold text-gray-500';
+            badge.textContent = s.open ? '受付中' : '満席（キャンセル待ち）';
+            label.appendChild(badge);
+            input.addEventListener('change', updateSubmitLabel);
+        }
         box.appendChild(label);
     });
+}
+
+// 一般モード：選んだ枠が満席なら、ボタンを「キャンセル待ちに登録する」に切り替える
+function updateSubmitLabel() {
+    if (mode !== 'general') return;
+    const picked = document.querySelector('input[data-slot]:checked');
+    const waiting = !!picked && slotState[picked.value] === false;
+    $('waitlist-flag').value = waiting ? '1' : '';
+    $('submit-btn').textContent = waiting ? 'キャンセル待ちに登録する' : 'この内容で予約する';
+}
+
+function applyMode() {
+    const g = mode === 'general';
+    $('notice-lottery').classList.toggle('hidden', g);
+    $('notice-general').classList.toggle('hidden', !g);
+    $('page-sub').textContent = g ? 'ご予約（先着順）' : '予約のご応募（抽選）';
+    $('slots-legend').textContent = g ? 'ご希望の枠（必須・1つ選んでください）' : '参加できる枠（必須・複数選択できます）';
+    $('slots-hint').textContent = g
+        ? '満席の枠を選ぶと、キャンセル待ちとして登録されます。'
+        : '各枠1組限定のため、応募が重なった場合は抽選になります。ご都合のつく枠をすべてお選びください。';
+    $('submit-btn').textContent = g ? 'この内容で予約する' : 'この内容で応募する';
 }
 
 async function init() {
@@ -281,10 +328,13 @@ async function init() {
         if (!data.ok) { showClosed(data.status, data); return; }
 
         priceTable = data.priceTable;
+        mode = data.mode === 'general' ? 'general' : 'lottery';
         $('round-label').textContent = data.label || '';
-        $('period').textContent = data.endIso
+        const periodText = data.endIso
             ? (data.startIso ? fmtDt(data.startIso) + ' 〜 ' : '〜 ') + fmtDt(data.endIso)
             : '（締切は別途ご案内）';
+        document.querySelectorAll('.period').forEach(el => { el.textContent = periodText; });
+        applyMode();
         fillSlots(data.slots || []);
         syncChildrenOptions();
         renderChildren();
@@ -303,7 +353,7 @@ function showClosed(status, data) {
         b.textContent = data && data.startIso ? `受付開始は ${fmtDt(data.startIso)} です。` : '受付開始までお待ちください。';
     } else if (status === 'after') {
         t.textContent = '受付は終了しました';
-        b.textContent = 'ご応募ありがとうございました。次回の案内をお待ちください。';
+        b.textContent = 'ありがとうございました。次回のご案内は、Instagramやホームページでお知らせします。';
     } else if (status === 'error') {
         t.textContent = '通信エラーが発生しました';
         b.textContent = '時間をおいて、もう一度お試しください。';
@@ -328,7 +378,11 @@ $('reserve-form').addEventListener('submit', async e => {
     if (priceTable[a + '-' + c] === undefined) { status.textContent = ERRORS.invalid_people; return; }
 
     const chosen = [...document.querySelectorAll('input[data-slot]:checked')].map(el => el.value);
-    if (!chosen.length) { status.textContent = '参加できる枠を1つ以上選んでください。'; return; }
+    if (!chosen.length) {
+        status.textContent = mode === 'general' ? 'ご希望の枠を選んでください。' : '参加できる枠を1つ以上選んでください。';
+        return;
+    }
+    updateSubmitLabel();
 
     for (let i = 1; i <= c; i++) {
         const h = Number($('childHeight' + i).value);
@@ -352,6 +406,9 @@ $('reserve-form').addEventListener('submit', async e => {
         const res = await fetch(GAS_API_URL, { method: 'POST', body: fd });
         const data = await res.json();
         if (data.result === 'success') {
+            const t = DONE_TEXT[data.outcome] || DONE_TEXT.applied;
+            $('done-title').textContent = t[0];
+            $('done-body').innerHTML = t[1];
             show('done');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
@@ -361,7 +418,8 @@ $('reserve-form').addEventListener('submit', async e => {
         console.error(err);
         status.textContent = '通信エラーが発生しました。時間をおいて再度お試しください。';
     } finally {
-        btn.disabled = false; btn.textContent = 'この内容で応募する';
+        btn.disabled = false;
+        if (mode === 'general') updateSubmitLabel(); else btn.textContent = 'この内容で応募する';
     }
 });
 
