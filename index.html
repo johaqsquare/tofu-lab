@@ -616,25 +616,17 @@
 
                 <div class="max-w-4xl mx-auto bg-white rounded-lg p-4 md:p-8 reveal border">
                     <div class="text-center text-gray-800">
-                        <h3 class="text-2xl font-extrabold brand-text-navy mb-4">ご予約の受付状況</h3>
-                        <div id="reserve-status-box" class="bg-[#FDF9F2] border border-gray-200 rounded-lg p-6 mb-6">
-                            <p id="reserve-status-text" class="text-sm text-gray-600">受付状況を確認中...</p>
-                            <a id="reserve-status-link" href="#" class="hidden inline-block mt-4 bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 shadow-md">予約フォームを開く</a>
-                        </div>
-
-                        <div class="text-left text-sm text-gray-700 bg-white border border-gray-200 rounded-lg p-5 mb-6">
-                            <p class="font-bold brand-text-navy mb-2">ご予約の流れ</p>
-                            <ol class="list-decimal pl-5 space-y-1">
-                                <li><b>優先案内（抽選）</b>：Instagramの「優先案内」チャンネルで、予約フォームのURLをお送りします。受付期間内にお申し込みください。</li>
-                                <li>抽選の結果は、<b>当選・落選どちらの方にも</b>メールでお知らせします。</li>
-                                <li>落選された方は「補欠」となり、当選者のキャンセルが出た場合に、順番にメールでご連絡します。</li>
-                                <li>優先案内で空きが残った場合は、<b>一般受付（先着順）</b>を行います。満席の日時は、キャンセル待ちとしてお申し込みいただけます。</li>
-                            </ol>
-                        </div>
+                        <h3 class="text-2xl font-extrabold brand-text-navy mb-4">ご予約について</h3>
 
                         <div class="text-left text-sm text-gray-700 bg-white border border-gray-200 rounded-lg p-5">
-                            <p class="font-bold brand-text-navy mb-2">優先案内チャンネルのご案内</p>
-                            <p>次回の予約開始は、InstagramのDM「優先案内」チャンネルでお知らせします。<a href="https://www.instagram.com/channel/w8PXJYy4xg9v3o8Y/" target="_blank" rel="noopener" class="text-brand-orange underline">チャンネルに参加する</a></p>
+                            <p class="font-bold brand-text-navy mb-2">ご予約の流れ</p>
+                            <ol class="list-decimal pl-5 space-y-1">
+                                <li>Instagramの<b>「優先案内」チャンネル</b>で、予約フォームのURLをお送りします。</li>
+                                <li>受付期間内にフォームからお申し込みください。<b>先着順ではなく、抽選</b>です。</li>
+                                <li>当選された方にのみ、Instagramの<b>DM</b>でご連絡します。ご連絡がない場合は、今回は見送りとなります。</li>
+                                <li>キャンセルが出た場合は、Instagramの<b>ストーリーズ</b>で、予約ページのリンクとともにお知らせします（先着順）。</li>
+                            </ol>
+                            <p class="mt-3"><a href="https://www.instagram.com/channel/w8PXJYy4xg9v3o8Y/" target="_blank" rel="noopener" class="text-brand-orange underline">優先案内チャンネルに参加する</a></p>
                         </div>
                     </div>
 
@@ -671,7 +663,6 @@
                                 <p>抽選のご応募フォームのURLはチャンネルでお届けします。<br>
                                 <a href="https://www.instagram.com/channel/w8PXJYy4xg9v3o8Y/" target="_blank" rel="noopener" class="underline brand-text-orange">チャンネルに参加する</a></p>
                             </div>
-                            <div class="hidden">
                             <div class="hidden" aria-hidden="true">
                             <h3 class="text-xl font-bold brand-text-navy mb-4 text-center">優先案内・キャンセル待ち</h3>
 
@@ -880,7 +871,7 @@
                                 </span>
                             </summary>
                             <div class="mt-4 text-gray-600 text-sm">
-                                <p>キャンセルは予約日の3日前までにお願いいたします。2日前からのキャンセルは料金の50%、当日のキャンセルは100%のキャンセル料が発生いたしますので、あらかじめご了承ください。キャンセルのご連絡をいただいた枠は、補欠・キャンセル待ちの方へ順にご案内します。</p>
+                                <p>キャンセルは予約日の3日前までにお願いいたします。2日前からのキャンセルは料金の50%、当日のキャンセルは100%のキャンセル料が発生いたしますので、あらかじめご了承ください。キャンセルで空いた枠は、Instagramのストーリーズでお知らせします。</p>
                             </div>
                         </details>
                     </div>
@@ -984,7 +975,7 @@
                             <label for="message" class="block text-sm font-bold text-gray-700 mb-2">お問い合わせ内容</label>
                             <textarea id="message" name="message" rows="6" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-orange focus:border-brand-orange transition duration-300" placeholder="こちらにお問い合わせ内容をご記入ください。"></textarea>
                         </div>
-                        <div class="hidden">
+                     
                             <label for="honeypot">If you are a human, leave this field blank.</label>
                             <input type="text" id="honeypot" name="honeypot" tabindex="-1">
                         </div>
@@ -1129,29 +1120,6 @@
                     }
                 }
 
-                // 2.5 予約の受付状況ボックス
-                (function () {
-                    const st = data.reserveStatus;
-                    const text = document.getElementById('reserve-status-text');
-                    const link = document.getElementById('reserve-status-link');
-                    if (!text || !link) return;
-                    const fmt = iso => {
-                        const d = new Date(iso);
-                        return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
-                    };
-                    if (st && st.state === 'open') {
-                        const end = st.endIso ? new Date(new Date(st.endIso).getTime() + 1000) : null;
-                        const endLabel = end ? '（' + fmt(st.endIso) + ' まで）' : '';
-                        text.textContent = '現在、予約を受付中です。' + endLabel;
-                        link.href = st.url;
-                        link.classList.remove('hidden');
-                    } else if (st && st.state === 'upcoming') {
-                        text.textContent = '次回の受付は ' + fmt(st.startIso) + ' から開始します。';
-                    } else {
-                        text.textContent = '現在、受付はしておりません。次回は優先案内チャンネルでお知らせします。';
-                    }
-                })();
-
                 // 3. 最新の空き状況表の生成
                 const tableBody = document.getElementById('availability-table-body');
                 if (tableBody && data.availabilityData) {
@@ -1170,22 +1138,6 @@
                             `;
                             tableBody.appendChild(tr);
                         });
-                    }
-                }
-
-                // 3b. 受付中の一般予約フォームへのボタン
-                const statusBox = document.getElementById('reserve-status-box');
-                if (statusBox) {
-                    const rs = data.reserveStatus || { state: 'closed' };
-                    const fmt = iso => new Intl.DateTimeFormat('ja-JP', { timeZone: 'Asia/Tokyo', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
-                    if (rs.state === 'open' && rs.url) {
-                        statusBox.innerHTML = '<p class="font-bold brand-text-navy mb-1">ただいま、ご予約を受付中です</p>'
-                            + '<p class="text-xs mb-4">' + (rs.endIso ? fmt(rs.endIso) + ' まで・' : '') + '先着順（満席の枠はキャンセル待ち）</p>'
-                            + '<a href="' + rs.url + '" class="inline-block bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 transition-opacity">予約フォームへ</a>';
-                    } else if (rs.state === 'upcoming' && rs.startIso) {
-                        statusBox.innerHTML = '<p class="font-bold brand-text-navy mb-1">' + fmt(rs.startIso) + ' から、一般受付を開始します</p>';
-                    } else {
-                        statusBox.innerHTML = '<p>現在、受付中のご予約はありません。<br>次回のご案内は、Instagramの優先案内チャンネルとこのページでお知らせします。</p>';
                     }
                 }
 
