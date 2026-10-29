@@ -616,13 +616,26 @@
 
                 <div class="max-w-4xl mx-auto bg-white rounded-lg p-4 md:p-8 reveal border">
                     <div class="text-center text-gray-800">
-                        <h3 class="text-2xl font-extrabold brand-text-navy mb-4">ご予約について</h3>
-                        <div id="reserve-status-box" class="max-w-lg mx-auto bg-[#FDF9F2] border border-orange-100 rounded-lg p-5 mb-6 text-sm text-gray-600">受付状況を確認しています...</div>
-                        <ol class="max-w-lg mx-auto text-left text-sm text-gray-600 space-y-2 list-decimal pl-6">
-                            <li>Instagramの「優先案内チャンネル」で、抽選のご応募フォームをご案内します。</li>
-                            <li>抽選に外れた方・空きが出た枠は、一般受付（先着順）としてホームページでご案内します。</li>
-                            <li>満席の枠は、フォームからキャンセル待ちとして登録できます。</li>
-                        </ol>
+                        <h3 class="text-2xl font-extrabold brand-text-navy mb-4">ご予約の受付状況</h3>
+                        <div id="reserve-status-box" class="bg-[#FDF9F2] border border-gray-200 rounded-lg p-6 mb-6">
+                            <p id="reserve-status-text" class="text-sm text-gray-600">受付状況を確認中...</p>
+                            <a id="reserve-status-link" href="#" class="hidden inline-block mt-4 bg-brand-orange text-white font-bold px-8 py-3 rounded-full hover:opacity-90 shadow-md">予約フォームを開く</a>
+                        </div>
+
+                        <div class="text-left text-sm text-gray-700 bg-white border border-gray-200 rounded-lg p-5 mb-6">
+                            <p class="font-bold brand-text-navy mb-2">ご予約の流れ</p>
+                            <ol class="list-decimal pl-5 space-y-1">
+                                <li><b>優先案内（抽選）</b>：Instagramの「優先案内」チャンネルで、予約フォームのURLをお送りします。受付期間内にお申し込みください。</li>
+                                <li>抽選の結果は、<b>当選・落選どちらの方にも</b>メールでお知らせします。</li>
+                                <li>落選された方は「補欠」となり、当選者のキャンセルが出た場合に、順番にメールでご連絡します。</li>
+                                <li>優先案内で空きが残った場合は、<b>一般受付（先着順）</b>を行います。満席の日時は、キャンセル待ちとしてお申し込みいただけます。</li>
+                            </ol>
+                        </div>
+
+                        <div class="text-left text-sm text-gray-700 bg-white border border-gray-200 rounded-lg p-5">
+                            <p class="font-bold brand-text-navy mb-2">優先案内チャンネルのご案内</p>
+                            <p>次回の予約開始は、InstagramのDM「優先案内」チャンネルでお知らせします。<a href="https://www.instagram.com/channel/w8PXJYy4xg9v3o8Y/" target="_blank" rel="noopener" class="text-brand-orange underline">チャンネルに参加する</a></p>
+                        </div>
                     </div>
 
                     <div class="mt-12 pt-8 border-t border-gray-300">
@@ -659,6 +672,7 @@
                                 <a href="https://www.instagram.com/channel/w8PXJYy4xg9v3o8Y/" target="_blank" rel="noopener" class="underline brand-text-orange">チャンネルに参加する</a></p>
                             </div>
                             <div class="hidden">
+                            <div class="hidden" aria-hidden="true">
                             <h3 class="text-xl font-bold brand-text-navy mb-4 text-center">優先案内・キャンセル待ち</h3>
 
                             <form id="waitlist-form" class="space-y-4 max-w-lg mx-auto">
@@ -752,6 +766,7 @@
                                 </div>
                                 <p id="cancel-status" class="text-center text-xs mt-2"></p>
                             </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -865,7 +880,7 @@
                                 </span>
                             </summary>
                             <div class="mt-4 text-gray-600 text-sm">
-                                <p>キャンセルは予約日の3日前までにお願いいたします。2日前からのキャンセルは料金の50%、当日のキャンセルは100%のキャンセル料が発生いたしますので、あらかじめご了承ください。</p>
+                                <p>キャンセルは予約日の3日前までにお願いいたします。2日前からのキャンセルは料金の50%、当日のキャンセルは100%のキャンセル料が発生いたしますので、あらかじめご了承ください。キャンセルのご連絡をいただいた枠は、補欠・キャンセル待ちの方へ順にご案内します。</p>
                             </div>
                         </details>
                     </div>
@@ -901,8 +916,8 @@
                 </div>
                 <p class="text-center text-gray-700 text-sm mb-8 reveal">お客様に安全に楽しんでいただくため、以下の点にご協力・ご理解をお願いいたします。</p>
                 <div class="bg-[#FDF9F2] rounded-lg shadow-lg border p-8 space-y-8 text-gray-700 reveal text-left text-sm">
-                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">アレルギーについて</h3><p>本体験では大豆を使用します。重篤な大豆アレルギーをお持ちの方は、安全のためご参加をお控えください。その他のアレルギーについては、ご自身の責任においてご参加いただけますようお願いいたします。ご不明点があればお気軽にお問い合わせフォームよりご連絡ください。</p></div>
-                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">服装について</h3><p>作業中に衣類が汚れる可能性がございます。汚れても良い服装でお越しください。お子様には白衣を貸出ししますので、ご応募フォームにご参加されるお子様の身長をご記入ください。大人の方へは白衣・エプロンの貸し出しはないため、エプロンをご持参ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">アレルギーについて</h3><p>本体験では大豆を使用します。重篤な大豆アレルギーをお持ちの方は、安全のためご参加をお控えください。その他のアレルギーについてはご自身の責任においてご参加いただけますようお願いいたします。ご不明点があればお気軽にお問い合わせフォームよりご連絡ください。</p></div>
+                    <div><h3 class="text-xl font-bold brand-text-navy mb-2">服装について</h3><p>作業中に衣類が汚れる可能性がございます。汚れても良い服装でお越しください。お子様には白衣を貸出ししますので、予約フォームの「お子様の身長」欄にご参加されるお子様の身長をご記入ください。大人の方へは白衣・エプロンの貸し出しはないため、エプロンをご持参ください。</p></div>
                     <div><h3 class="text-xl font-bold brand-text-navy mb-2">遅刻について</h3><p>体験は定刻通りに開始いたします。開始時間の5分前にお越しください。やむを得ず遅れる場合は、必ずご連絡ください。15分以上遅刻された場合、体験の一部に参加できない、または参加をお断りする場合がございます。その場合もキャンセル料の対象となりますのでご注意ください。</p></div>
                     <div><h3 class="text-xl font-bold brand-text-navy mb-2">安全管理について</h3><p>体験中は講師の指示に従い、安全に作業を行ってください。万が一、体験中にお怪我をされた場合は応急処置を行いますが、その後の責任は負いかねますので、十分にご注意ください。</p></div>
                     <div><h3 class="text-xl font-bold brand-text-navy mb-2">写真・動画の撮影について</h3><p>体験の様子をスタッフが撮影し、当店のウェブサイトやSNS等で紹介させていただく場合がございます。掲載の可否は、ご応募フォームでお選びいただいたご回答に従います。ご回答の変更は、いつでもお問い合わせフォームからご連絡いただけます。</p></div>
@@ -1113,6 +1128,29 @@
                         }
                     }
                 }
+
+                // 2.5 予約の受付状況ボックス
+                (function () {
+                    const st = data.reserveStatus;
+                    const text = document.getElementById('reserve-status-text');
+                    const link = document.getElementById('reserve-status-link');
+                    if (!text || !link) return;
+                    const fmt = iso => {
+                        const d = new Date(iso);
+                        return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+                    };
+                    if (st && st.state === 'open') {
+                        const end = st.endIso ? new Date(new Date(st.endIso).getTime() + 1000) : null;
+                        const endLabel = end ? '（' + fmt(st.endIso) + ' まで）' : '';
+                        text.textContent = '現在、予約を受付中です。' + endLabel;
+                        link.href = st.url;
+                        link.classList.remove('hidden');
+                    } else if (st && st.state === 'upcoming') {
+                        text.textContent = '次回の受付は ' + fmt(st.startIso) + ' から開始します。';
+                    } else {
+                        text.textContent = '現在、受付はしておりません。次回は優先案内チャンネルでお知らせします。';
+                    }
+                })();
 
                 // 3. 最新の空き状況表の生成
                 const tableBody = document.getElementById('availability-table-body');
