@@ -54,7 +54,7 @@
         <div id="notice-lottery" class="hidden bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
             <p class="font-bold navy mb-1">今回は抽選です（先着順ではありません）</p>
             <p>受付期間：<span class="period font-bold"></span></p>
-            <p class="mt-1">応募の時点では、料金はかかりません。抽選の結果は、当選・落選のどちらの方にも、受付終了後にメールなどでご連絡します。抽選に外れた場合も、補欠（キャンセル待ち）として登録され、当選された方にキャンセルが出たときに、順番にご連絡します。</p>
+            <p class="mt-1">応募の時点では、料金はかかりません。抽選の結果は、当選された方にのみ、受付終了後にInstagramのダイレクトメッセージ（DM）でご連絡します。ご連絡がない場合は、今回は見送りとなります。キャンセルが出た場合は、Instagramのストーリーズでお知らせします。</p>
         </div>
         <div id="notice-general" class="hidden bg-[#FDF9F2] border border-orange-100 rounded-lg p-3 text-xs text-gray-700 leading-relaxed mb-6">
             <p class="font-bold navy mb-1">先着順のご予約です</p>
@@ -191,7 +191,7 @@ let mode = 'lottery';          // 'lottery'（優先・抽選）／'general'（�
 let slotState = {};            // 一般モードで、枠の値 → 空きがあるか
 
 const DONE_TEXT = {
-    applied:  ['ご応募を受け付けました', '受付メールをお送りしました。<br>抽選結果は、受付終了後にご連絡します。<br>当選された方には、Squareから予約確定のメールが届きます。'],
+    applied:  ['ご応募を受け付けました', '受付メールをお送りしました。<br>当選された方にのみ、受付終了後にInstagramのDMでご連絡します。<br>ご連絡がない場合は、今回は見送りとなります。'],
     reserved: ['ご予約を受け付けました', '受付メールをお送りしました。<br>この枠をお取りしています。<br>Squareへの登録が完了しましたら、Squareから予約確定のメールが届きます。'],
     waitlist: ['キャンセル待ちを受け付けました', '受付メールをお送りしました。<br>現時点では、予約は確定していません。<br>キャンセルが出た場合のみ、待ち順にご連絡します。']
 };
